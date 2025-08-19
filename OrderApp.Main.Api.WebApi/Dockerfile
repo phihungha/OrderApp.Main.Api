@@ -11,10 +11,14 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["OrderApp.Main.Api.WebApi/OrderApp.Main.Api.WebApi.csproj", "OrderApp.Main.Api.WebApi/"]
-COPY ["OrderApp.Main.Api.Application/OrderApp.Main.Api.Application.csproj", "OrderApp.Main.Api.Application/"]
 COPY ["OrderApp.Main.Api.Domain/OrderApp.Main.Api.Domain.csproj", "OrderApp.Main.Api.Domain/"]
+COPY ["OrderApp.Main.Api.Domain/packages.lock.json", "OrderApp.Main.Api.Domain/"]
+COPY ["OrderApp.Main.Api.Application/OrderApp.Main.Api.Application.csproj", "OrderApp.Main.Api.Application/"]
+COPY ["OrderApp.Main.Api.Application/packages.lock.json", "OrderApp.Main.Api.Application/"]
 COPY ["OrderApp.Main.Api.Infrastructure/OrderApp.Main.Api.Infrastructure.csproj", "OrderApp.Main.Api.Infrastructure/"]
+COPY ["OrderApp.Main.Api.Infrastructure/packages.lock.json", "OrderApp.Main.Api.Infrastructure/"]
+COPY ["OrderApp.Main.Api.WebApi/OrderApp.Main.Api.WebApi.csproj", "OrderApp.Main.Api.WebApi/"]
+COPY ["OrderApp.Main.Api.WebApi/packages.lock.json", "OrderApp.Main.Api.WebApi/"]
 RUN dotnet restore "./OrderApp.Main.Api.WebApi/OrderApp.Main.Api.WebApi.csproj"
 COPY . .
 WORKDIR "/src/OrderApp.Main.Api.WebApi"
