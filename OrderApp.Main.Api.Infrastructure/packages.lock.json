@@ -219,6 +219,20 @@
         "resolved": "2.0.123",
         "contentHash": "RDFF4rBLLmbpi6pwkY7q/M6UXHRJEOerplDGE5jwEkP/JGJnBauAClYavNKJPW1yOTWRPIyfj4is3EaJxQXILQ=="
       },
+      "FluentValidation": {
+        "type": "Transitive",
+        "resolved": "12.0.0",
+        "contentHash": "8NVLxtMUXynRHJIX3Hn1ACovaqZIJASufXIIFkD0EUbcd5PmMsL1xUD5h548gCezJ5BzlITaR9CAMrGe29aWpA=="
+      },
+      "FluentValidation.DependencyInjectionExtensions": {
+        "type": "Transitive",
+        "resolved": "12.0.0",
+        "contentHash": "B28fBRL1UjhGsBC8fwV6YBZosh+SiU1FxdD7l7p5dGPgRlVI7UnM+Lgzmg+unZtV1Zxzpaw96UY2MYfMaAd8cg==",
+        "dependencies": {
+          "FluentValidation": "12.0.0",
+          "Microsoft.Extensions.Dependencyinjection.Abstractions": "2.1.0"
+        }
+      },
       "FluentValidator": {
         "type": "Transitive",
         "resolved": "2.0.4",
@@ -693,6 +707,22 @@
         "type": "Transitive",
         "resolved": "4.3.0",
         "contentHash": "VB5cn/7OzUfzdnC8tqAIMQciVLiq2epm2NrAm1E9OjNRyG4lVhfR61SMcLizejzQP8R8Uf/0l5qOIbUEi+RdEg=="
+      },
+      "SharpGrip.FluentValidation.AutoValidation.Mvc": {
+        "type": "Transitive",
+        "resolved": "1.5.0",
+        "contentHash": "gqzRTuyZSn8eGbOg0OVQIY9mHCW78WMq1sLg+tqTDQVZJC/clbi9g9AV0ErZj1PZfuGIqG35cBo32Px0MVW5Ow==",
+        "dependencies": {
+          "SharpGrip.FluentValidation.AutoValidation.Shared": "1.5.0"
+        }
+      },
+      "SharpGrip.FluentValidation.AutoValidation.Shared": {
+        "type": "Transitive",
+        "resolved": "1.5.0",
+        "contentHash": "vTZhTWRrTk051yXEOmkU9jMbHuckcBTW7P/3o1SX7R7arJ+JhTNinVeECkLJRcliW6qMto5aYRI2GEOP+DR4Dg==",
+        "dependencies": {
+          "FluentValidation": "10.0.0"
+        }
       },
       "System.AppContext": {
         "type": "Transitive",
@@ -1492,8 +1522,11 @@
       "orderapp.main.api.application": {
         "type": "Project",
         "dependencies": {
+          "FluentValidation.DependencyInjectionExtensions": "[12.0.0, )",
           "FluentValidator": "[2.0.4, )",
-          "OrderApp.Main.Api.Domain": "[1.0.0, )"
+          "Microsoft.Extensions.Hosting.Abstractions": "[9.0.8, )",
+          "OrderApp.Main.Api.Domain": "[1.0.0, )",
+          "SharpGrip.FluentValidation.AutoValidation.Mvc": "[1.5.0, )"
         }
       },
       "orderapp.main.api.domain": {
