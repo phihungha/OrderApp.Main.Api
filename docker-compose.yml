@@ -12,4 +12,5 @@ services:
     volumes:
       - orderapp-main-api-db-data:/var/lib/postgresql/data
 
- 
+volumes:
+    orderapp-main-api-db-data:
