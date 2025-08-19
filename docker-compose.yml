@@ -1,0 +1,7 @@
+services:
+  web-api:
+    container_name: orderapp-main-api-web-api
+    image: ${DOCKER_REGISTRY-}orderapp-main-api-web-api
+    build:
+      context: .
+      dockerfile: OrderApp.Main.Api.WebApi/Dockerfile
