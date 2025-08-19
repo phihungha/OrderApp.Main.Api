@@ -5,3 +5,11 @@ services:
     build:
       context: .
       dockerfile: OrderApp.Main.Api.WebApi/Dockerfile
+    depends_on: [ "db" ]
+  db:
+    container_name: orderapp-main-api-db
+    image: postgres:17
+    volumes:
+      - orderapp-main-api-db-data:/var/lib/postgresql/data
+
+ 
