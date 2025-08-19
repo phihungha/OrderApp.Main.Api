@@ -6,8 +6,7 @@
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="4.0.0.20" />
-    <PackageReference Include="AWSSDK.SQS" Version="4.0.0.21" />
+    <PackageReference Include="AWS.Messaging" Version="1.0.1" />
     <PackageReference Include="AWSSDK.SSO" Version="4.0.0.19" />
     <PackageReference Include="AWSSDK.SSOOIDC" Version="4.0.0.19" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.8.21" />

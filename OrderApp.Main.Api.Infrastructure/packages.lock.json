@@ -2,22 +2,21 @@
   "version": 1,
   "dependencies": {
     "net9.0": {
-      "AWSSDK.SimpleNotificationService": {
+      "AWS.Messaging": {
         "type": "Direct",
-        "requested": "[4.0.0.20, )",
-        "resolved": "4.0.0.20",
-        "contentHash": "lOoUWuI8EhSHX7bbqvHLxgmqO7t3p7tFqXKnnBVY+GDP8/VfcA+hz50A4G94wEBXxXhFKjgk7z57XDe5Hf7s2A==",
+        "requested": "[1.0.1, )",
+        "resolved": "1.0.1",
+        "contentHash": "ttbj7YbTnyFepIYkh39GOmzYjrGYrfrPBUVc4yNx2YlD6QjLYsnfQgzzCQkEqk6aAf8dWjzvF7R1bo7WJp21DQ==",
         "dependencies": {
-          "AWSSDK.Core": "[4.0.0.23, 5.0.0)"
-        }
-      },
-      "AWSSDK.SQS": {
-        "type": "Direct",
-        "requested": "[4.0.0.21, )",
-        "resolved": "4.0.0.21",
-        "contentHash": "9sBA6NLIF8B8sX5afm3iVe3JpsZlQJa2zsKbirNURV/QZzH0Ziw5OcI+zlvxqcn7BI/CgrjTx+09IB8uk62qtQ==",
-        "dependencies": {
-          "AWSSDK.Core": "[4.0.0.23, 5.0.0)"
+          "AWSSDK.EventBridge": "4.0.0",
+          "AWSSDK.Extensions.NETCore.Setup": "4.0.0",
+          "AWSSDK.SQS": "4.0.0",
+          "AWSSDK.SimpleNotificationService": "4.0.0",
+          "Microsoft.Extensions.DependencyInjection": "8.0.1",
+          "Microsoft.Extensions.Hosting.Abstractions": "8.0.1",
+          "Microsoft.Extensions.Http": "8.0.1",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "8.0.0"
         }
       },
       "AWSSDK.SSO": {
@@ -179,6 +178,41 @@
         "type": "Transitive",
         "resolved": "4.0.0.23",
         "contentHash": "Cu34rzkmkMoRnGBTO4e/vFIleBUljnDEU+n009LreGAPwxFosrEgO34VVxXJLJFuqOa1d2Rj20GGe35xJ8uyjA=="
+      },
+      "AWSSDK.EventBridge": {
+        "type": "Transitive",
+        "resolved": "4.0.0",
+        "contentHash": "DkmpIKiZ7gDk/xU4FbzkwIDCHVCMZ0j+VCJpxN7GWichNoaBKCqpJPM26snJAid/ty9Kb8YseWYT6ZTIh8qSfQ==",
+        "dependencies": {
+          "AWSSDK.Core": "[4.0.0, 5.0.0)"
+        }
+      },
+      "AWSSDK.Extensions.NETCore.Setup": {
+        "type": "Transitive",
+        "resolved": "4.0.0",
+        "contentHash": "VJP+y186CTC8NSadjzLGIjJ2TNUOps9QR9QyWMkPHdmLX8HlMiS8Bp8mESJ+MnZupvZ5z5KB9sF42lSEHo9lgQ==",
+        "dependencies": {
+          "AWSSDK.Core": "4.0.0",
+          "Microsoft.Extensions.Configuration.Abstractions": "2.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "2.0.0"
+        }
+      },
+      "AWSSDK.SimpleNotificationService": {
+        "type": "Transitive",
+        "resolved": "4.0.0",
+        "contentHash": "YPCwP1LYJFXPWtmxYA4XByDGydW5otAqBYBCFb/5gBTyr4QoVRzu4+RI6fmAeDP3SLVyLSBMkoRQ5oMpVq9M/Q==",
+        "dependencies": {
+          "AWSSDK.Core": "[4.0.0, 5.0.0)"
+        }
+      },
+      "AWSSDK.SQS": {
+        "type": "Transitive",
+        "resolved": "4.0.0",
+        "contentHash": "lTtR3M0SWe20408X9VtplsqZuc+0fjyROPJdcHFpcFWjRzg8y2MpZfsUxFe5PXwLfpw/cU+57NkuMAjJOYsAng==",
+        "dependencies": {
+          "AWSSDK.Core": "[4.0.0, 5.0.0)"
+        }
       },
       "Dapper": {
         "type": "Transitive",
