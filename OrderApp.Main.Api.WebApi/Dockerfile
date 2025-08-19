@@ -19,7 +19,7 @@ COPY ["OrderApp.Main.Api.Infrastructure/OrderApp.Main.Api.Infrastructure.csproj"
 COPY ["OrderApp.Main.Api.Infrastructure/packages.lock.json", "OrderApp.Main.Api.Infrastructure/"]
 COPY ["OrderApp.Main.Api.WebApi/OrderApp.Main.Api.WebApi.csproj", "OrderApp.Main.Api.WebApi/"]
 COPY ["OrderApp.Main.Api.WebApi/packages.lock.json", "OrderApp.Main.Api.WebApi/"]
-RUN dotnet restore "./OrderApp.Main.Api.WebApi/OrderApp.Main.Api.WebApi.csproj"
+RUN dotnet restore --locked-mode "./OrderApp.Main.Api.WebApi/OrderApp.Main.Api.WebApi.csproj"
 COPY . .
 WORKDIR "/src/OrderApp.Main.Api.WebApi"
 RUN dotnet build "./OrderApp.Main.Api.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
