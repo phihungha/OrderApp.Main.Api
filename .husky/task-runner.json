@@ -5,7 +5,7 @@
       "name": "format",
       "group": "pre-commit",
       "command": "dotnet",
-      "args": [ "csharpier", "format", "." ]
+      "args": [ "csharpier", "format", "${staged}" ]
     }
    ]
 }

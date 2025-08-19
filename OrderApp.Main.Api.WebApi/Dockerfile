@@ -10,6 +10,7 @@ EXPOSE 8081
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
+ENV HUSKY=0
 WORKDIR /src
 COPY ["OrderApp.Main.Api.Domain/OrderApp.Main.Api.Domain.csproj", "OrderApp.Main.Api.Domain/"]
 COPY ["OrderApp.Main.Api.Domain/packages.lock.json", "OrderApp.Main.Api.Domain/"]
