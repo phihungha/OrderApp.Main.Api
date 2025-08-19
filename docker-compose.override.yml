@@ -4,7 +4,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
-      - ConnectionStrings__Default=Host=db;Database=default;Username=default;Password=default
+      - ConnectionStrings__Default=Host=default-db;Database=default;Username=web-api;Password=web-api
+      - ConnectionStrings__Jobs=Host=jobs-db;Database=jobs;Username=web-api;Password=web-api
     ports:
       - 8080:8080
       - 8081:8081
@@ -13,10 +14,17 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-  db:
+  default-db:
     environment:
       - POSTGRES_DB=default
-      - POSTGRES_USER=default
-      - POSTGRES_PASSWORD=default
+      - POSTGRES_USER=web-api
+      - POSTGRES_PASSWORD=web-api
     ports:
       - 5432:5432
+  jobs-db:
+    environment:
+      - POSTGRES_DB=jobs
+      - POSTGRES_USER=web-api
+      - POSTGRES_PASSWORD=web-api
+    ports:
+      - 5433:5433

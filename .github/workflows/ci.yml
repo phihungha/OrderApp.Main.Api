@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HUSKY: 0
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+        cache: true
+        cache-dependency-path: OrderApp.Main.Api.WebApi/packages.lock.json
+    - name: Restore tools from tool-manifest file
+      run: dotnet tool restore
+    - name: Check if code has been formatted
+      run: dotnet csharpier check .
+    - name: Restore dependencies
+      run: dotnet restore --locked-mode OrderApp.Main.Api.sln
+    - name: Build and check for warnings
+      run: dotnet build /warnaserror --no-restore OrderApp.Main.Api.sln
