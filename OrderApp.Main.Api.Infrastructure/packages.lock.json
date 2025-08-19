@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net9.0": {
+      "orderapp.main.api.application": {
+        "type": "Project",
+        "dependencies": {
+          "OrderApp.Main.Api.Domain": "[1.0.0, )"
+        }
+      },
+      "orderapp.main.api.domain": {
+        "type": "Project"
+      }
+    }
+  }
+}
