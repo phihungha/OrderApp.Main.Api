@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OrderApp.Main.Api.Application.Interfaces;
 using OrderApp.Main.Api.Infrastructure.Persistence;
 
 namespace OrderApp.Main.Api.Infrastructure
@@ -34,6 +35,8 @@ namespace OrderApp.Main.Api.Infrastructure
                 provider.UsePostgreSqlStorage(c => c.UseNpgsqlConnection(jobsConnectionString))
             );
             services.AddHangfireServer();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }
