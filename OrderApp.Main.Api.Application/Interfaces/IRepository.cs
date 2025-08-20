@@ -1,9 +1,10 @@
 ﻿namespace OrderApp.Main.Api.Application.Interfaces
 {
-    public interface IRepository<T>
-        where T : class
+    public interface IRepository<TEntity>
+        where TEntity : class
     {
-        void Add(T entity);
-        void Delete(T entity);
+        void Add(TEntity entity);
+        void Update(TEntity entity);
+        void Delete(TEntity entity);
     }
 }
