@@ -1,3 +1,5 @@
+using FluentResults;
+using FluentResults.Extensions.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using OrderApp.Main.Api.Application.DTOs.ProductDTOs;
 using OrderApp.Main.Api.Application.Interfaces;
@@ -30,37 +32,28 @@ namespace OrderApp.Main.Api.WebApi.Controllers
         [Route("{id}")]
         public async Task<ActionResult<ProductDetailsDto>> GetById(int id)
         {
-            var dto = await productService.GetDetailsById(id);
-
-            if (dto == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(dto);
+            return await productService.GetDetailsById(id).ToActionResult();
         }
 
         [HttpPost]
         public async Task<ActionResult<ProductDetailsDto>> Create(ProductInputDto inputDto)
         {
-            var createdProduct = await productService.Create(inputDto);
-            return CreatedAtAction(nameof(GetById), new { id = createdProduct.Id }, createdProduct);
+            var dto = await productService.Create(inputDto);
+            return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
         }
 
         [HttpPut]
         [Route("{id}")]
         public async Task<ActionResult<ProductDetailsDto>> Update(int id, ProductInputDto inputDto)
         {
-            var updatedProduct = await productService.Update(id, inputDto);
-            return Ok(updatedProduct);
+            return await productService.Update(id, inputDto).ToActionResult();
         }
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await productService.Delete(id);
-            return NoContent();
+            return await productService.Delete(id).ToActionResult();
         }
     }
 }
