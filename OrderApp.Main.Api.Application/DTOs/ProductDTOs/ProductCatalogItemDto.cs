@@ -2,7 +2,7 @@
 
 namespace OrderApp.Main.Api.Application.DTOs.ProductDTOs
 {
-    public class ProductCatalogItemDto
+    public record ProductCatalogItemDto
     {
         public required int Id { get; set; }
         public required string Name { get; set; }
