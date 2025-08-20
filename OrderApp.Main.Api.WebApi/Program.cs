@@ -1,3 +1,4 @@
+using OrderApp.Main.Api.Application;
 using OrderApp.Main.Api.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
 builder.AddInfrastructureServices();
+builder.AddApplicationServices();
 
 var app = builder.Build();
 

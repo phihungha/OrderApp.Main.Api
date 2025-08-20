@@ -8,11 +8,16 @@ namespace OrderApp.Main.Api.Infrastructure.Persistence.Repositories
     {
         private readonly AppDbContext dbContext = dbContext;
 
-        private DbSet<T> Entities => dbContext.Set<T>();
+        protected DbSet<T> Entities => dbContext.Set<T>();
 
         public void Add(T entity)
         {
             Entities.Add(entity);
+        }
+
+        public void Update(T entity)
+        {
+            Entities.Update(entity);
         }
 
         public void Delete(T entity)

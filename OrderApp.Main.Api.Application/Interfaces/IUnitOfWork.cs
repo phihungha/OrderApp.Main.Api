@@ -2,6 +2,8 @@
 {
     public interface IUnitOfWork
     {
+        IProductRepository Products { get; }
+
         Task SaveChanges();
     }
 }
