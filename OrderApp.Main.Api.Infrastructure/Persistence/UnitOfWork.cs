@@ -1,4 +1,7 @@
-﻿using OrderApp.Main.Api.Application.Interfaces;
+﻿using FluentResults;
+using Microsoft.EntityFrameworkCore;
+using OrderApp.Main.Api.Application.Errors;
+using OrderApp.Main.Api.Application.Interfaces;
 using OrderApp.Main.Api.Infrastructure.Persistence.Repositories;
 
 namespace OrderApp.Main.Api.Infrastructure.Persistence
@@ -9,9 +12,17 @@ namespace OrderApp.Main.Api.Infrastructure.Persistence
 
         public IProductRepository Products { get; } = new ProductRepository(dbContext);
 
-        public async Task SaveChanges()
+        public async Task<Result> SaveChanges()
         {
-            await dbContext.SaveChangesAsync();
+            try
+            {
+                await dbContext.SaveChangesAsync();
+                return Result.Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return new NotFoundError();
+            }
         }
     }
 }

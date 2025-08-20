@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentResults;
+using Microsoft.EntityFrameworkCore;
+using OrderApp.Main.Api.Application.Errors;
 using OrderApp.Main.Api.Application.Interfaces;
 using OrderApp.Main.Api.Domain.Entities.ProductEntities;
 
@@ -20,14 +22,18 @@ namespace OrderApp.Main.Api.Infrastructure.Persistence.Repositories
             return await query.OrderBy(e => e.Id).ToListAsync();
         }
 
-        public async Task<Product?> GetDetailsbyId(int id)
+        public async Task<Result<Product>> GetDetailsbyId(int id)
         {
-            return await Entities.Include(e => e.StockItem).FirstOrDefaultAsync(e => e.Id == id);
+            var entity = await Entities
+                .Include(e => e.StockItem)
+                .FirstOrDefaultAsync(e => e.Id == id);
+            return entity is null ? new NotFoundError() : entity;
         }
 
-        public async Task DeleteById(int id)
+        public async Task<Result> DeleteById(int id)
         {
-            await Entities.Where(e => e.Id == id).ExecuteDeleteAsync();
+            var rowsDeleted = await Entities.Where(e => e.Id == id).ExecuteDeleteAsync();
+            return Result.FailIf(rowsDeleted == 0, new NotFoundError());
         }
     }
 }

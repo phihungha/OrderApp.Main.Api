@@ -1,4 +1,5 @@
-﻿using OrderApp.Main.Api.Application.DTOs.ProductDTOs;
+﻿using FluentResults;
+using OrderApp.Main.Api.Application.DTOs.ProductDTOs;
 using OrderApp.Main.Api.Application.Interfaces;
 using OrderApp.Main.Api.Domain.Entities.ProductEntities;
 using OrderApp.Main.Api.Domain.Entities.StockItemEntities;
@@ -24,10 +25,16 @@ namespace OrderApp.Main.Api.Application.Services
             return entities.Select(ProductCatalogItemDto.FromEntity).ToList();
         }
 
-        public async Task<ProductDetailsDto?> GetDetailsById(int id)
+        public async Task<Result<ProductDetailsDto>> GetDetailsById(int id)
         {
-            var entity = await unitOfWork.Products.GetDetailsbyId(id);
-            return entity is null ? null : ProductDetailsDto.FromEntity(entity);
+            var result = await unitOfWork.Products.GetDetailsbyId(id);
+
+            if (result.IsFailed)
+            {
+                return Result.Fail(result.Errors);
+            }
+
+            return ProductDetailsDto.FromEntity(result.Value);
         }
 
         public async Task<ProductDetailsDto> Create(ProductInputDto productInputDto)
@@ -47,7 +54,7 @@ namespace OrderApp.Main.Api.Application.Services
             return ProductDetailsDto.FromEntity(newEntity);
         }
 
-        public async Task<ProductDetailsDto> Update(int id, ProductInputDto productInputDto)
+        public async Task<Result<ProductDetailsDto>> Update(int id, ProductInputDto productInputDto)
         {
             var updatedEntity = new Product
             {
@@ -61,12 +68,12 @@ namespace OrderApp.Main.Api.Application.Services
             unitOfWork.Products.Update(updatedEntity);
             await unitOfWork.SaveChanges();
 
-            return (await GetDetailsById(id))!;
+            return await GetDetailsById(id);
         }
 
-        public async Task Delete(int id)
+        public async Task<Result> Delete(int id)
         {
-            await unitOfWork.Products.DeleteById(id);
+            return await unitOfWork.Products.DeleteById(id);
         }
     }
 }
