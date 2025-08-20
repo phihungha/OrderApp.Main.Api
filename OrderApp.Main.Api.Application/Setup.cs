@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using OrderApp.Main.Api.Application.Interfaces;
+using OrderApp.Main.Api.Application.Services;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 namespace OrderApp.Main.Api.Application
@@ -10,6 +13,8 @@ namespace OrderApp.Main.Api.Application
             var services = builder.Services;
 
             services.AddFluentValidationAutoValidation();
+
+            services.AddScoped<IProductService, ProductService>();
         }
     }
 }
