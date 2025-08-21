@@ -47,6 +47,7 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
                 );
             }
             Status = OrderStatus.Fulfilling;
+            CreateEvent();
         }
 
         public void FinishFulfill()
@@ -58,6 +59,7 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
                 );
             }
             Status = OrderStatus.WaitingForShipping;
+            CreateEvent();
         }
 
         public void BeginShipping()
@@ -69,6 +71,7 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
                 );
             }
             Status = OrderStatus.Shipping;
+            CreateEvent();
         }
 
         public void FinishShipping()
@@ -80,6 +83,7 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
                 );
             }
             Status = OrderStatus.Shipped;
+            CreateEvent();
         }
 
         public void Complete()
@@ -91,6 +95,7 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
                 );
             }
             Status = OrderStatus.Completed;
+            CreateEvent();
         }
 
         public void Cancel()
@@ -102,6 +107,18 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
                 );
             }
             Status = OrderStatus.Canceled;
+            CreateEvent();
+        }
+
+        private void CreateEvent()
+        {
+            var eventEntity = new OrderEvent
+            {
+                OrderId = Id,
+                Status = Status,
+                Timestamp = DateTime.UtcNow,
+            };
+            Events.Add(eventEntity);
         }
     }
 }
