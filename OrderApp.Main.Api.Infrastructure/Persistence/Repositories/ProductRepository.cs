@@ -22,6 +22,11 @@ namespace OrderApp.Main.Api.Infrastructure.Persistence.Repositories
             return await query.OrderBy(e => e.Id).ToListAsync();
         }
 
+        public async Task<IReadOnlyList<Product>> GetManyByIdsAsync(IEnumerable<int> ids)
+        {
+            return await Entities.AsNoTracking().Where(e => ids.Contains(e.Id)).ToListAsync();
+        }
+
         public async Task<Result<Product>> GetDetailsbyId(int id)
         {
             var entity = await Entities

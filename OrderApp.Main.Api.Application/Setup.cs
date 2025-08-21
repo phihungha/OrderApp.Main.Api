@@ -15,6 +15,7 @@ namespace OrderApp.Main.Api.Application
 
             services.AddFluentValidationAutoValidation();
 
+            services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
         }

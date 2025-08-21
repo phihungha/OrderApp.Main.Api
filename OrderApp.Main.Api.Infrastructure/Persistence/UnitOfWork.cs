@@ -10,6 +10,7 @@ namespace OrderApp.Main.Api.Infrastructure.Persistence
     {
         private readonly AppDbContext dbContext = dbContext;
 
+        public IOrderRepository Orders { get; } = new OrderRepository(dbContext);
         public IProductRepository Products { get; } = new ProductRepository(dbContext);
 
         public async Task<Result> SaveChanges()

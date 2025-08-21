@@ -3,6 +3,6 @@
     public record OrderCreateDto
     {
         public required string ShippingAddress { get; set; }
-        public required ICollection<OrderLineInputDto> OrderLines { get; set; }
+        public required ICollection<OrderLineInputDto> Lines { get; set; }
     }
 }
