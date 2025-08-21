@@ -3,9 +3,9 @@ using FluentResults.Extensions.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using OrderApp.Main.Api.Application.Errors;
 
-namespace OrderApp.Main.Api.WebApi.ResultProfiles
+namespace OrderApp.Main.Api.WebApi.ResultEndpointProfiles
 {
-    public class GlobalResultProfile : DefaultAspNetCoreResultEndpointProfile
+    public class GlobalResultEndpointProfile : DefaultAspNetCoreResultEndpointProfile
     {
         public override ActionResult TransformFailedResultToActionResult(
             FailedResultToActionResultTransformationContext context

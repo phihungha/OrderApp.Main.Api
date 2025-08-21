@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 using FluentResults.Extensions.AspNetCore;
 using OrderApp.Main.Api.Application;
 using OrderApp.Main.Api.Infrastructure;
-using OrderApp.Main.Api.WebApi.ResultProfiles;
+using OrderApp.Main.Api.WebApi.ResultEndpointProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +17,7 @@ builder
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
-AspNetCoreResult.Setup(config => config.DefaultProfile = new GlobalResultProfile());
+AspNetCoreResult.Setup(config => config.DefaultProfile = new GlobalResultEndpointProfile());
 
 builder.AddInfrastructureServices();
 builder.AddApplicationServices();
