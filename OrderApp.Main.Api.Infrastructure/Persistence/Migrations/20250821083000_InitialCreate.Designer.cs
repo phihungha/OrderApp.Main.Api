@@ -12,7 +12,7 @@ using OrderApp.Main.Api.Infrastructure.Persistence;
 namespace OrderApp.Main.Api.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250821043814_InitialCreate")]
+    [Migration("20250821083000_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -37,15 +37,16 @@ namespace OrderApp.Main.Api.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("OrderApp.Main.Api.Domain.Entities.OrderEntities.OrderEvent", b =>
@@ -59,8 +60,9 @@ namespace OrderApp.Main.Api.Infrastructure.Persistence.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp with time zone");
