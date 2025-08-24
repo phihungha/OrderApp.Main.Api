@@ -1,5 +1,6 @@
-﻿using OrderApp.Main.Api.Domain.Entities.ProductEntities;
-using OrderApp.Main.Api.Domain.Exceptions;
+﻿using FluentResults;
+using OrderApp.Main.Api.Domain.Entities.ProductEntities;
+using OrderApp.Main.Api.Domain.Errors;
 
 namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
 {
@@ -26,8 +27,8 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
         {
             if (Status != OrderStatus.Pending)
             {
-                throw new BusinessException(
-                    "Cannot change order lines of an order that isn't pending."
+                throw new InvalidOperationException(
+                    "Cannot set order lines of an order not in Pending state."
                 );
             }
 
@@ -38,76 +39,117 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
             }
         }
 
-        public void BeginFulfill()
+        public void CreateFirstEvent()
+        {
+            var eventEntity = new OrderEvent
+            {
+                OrderId = Id,
+                Status = OrderStatus.Pending,
+                Timestamp = DateTime.UtcNow,
+            };
+            Events.Add(eventEntity);
+        }
+
+        public Result BeginFulfill()
         {
             if (IsFinished)
             {
-                throw new BusinessException(
-                    "Cannot begin fulfilling a finished (completed or canceled) order."
+                return new BusinessError(
+                    "Cannot begin fulfilling a finished order. (in Completed or Canceled state)"
                 );
             }
+
+            foreach (var line in Lines)
+            {
+                var product = line.Product;
+
+                if (line.Quantity > product.StockItem.Quantity)
+                {
+                    return new BusinessError(
+                        $"Product with ID {line.ProductId} doesn't have enough stock."
+                    );
+                }
+
+                product.StockItem.Quantity -= line.Quantity;
+            }
+
             Status = OrderStatus.Fulfilling;
             CreateEvent();
+
+            return Result.Ok();
         }
 
-        public void FinishFulfill()
+        public Result FinishFulfill()
         {
             if (Status != OrderStatus.Fulfilling)
             {
-                throw new BusinessException(
-                    "Cannot finish fulfilling an order that is not in fulfillment."
+                return new BusinessError(
+                    "Cannot finish fulfilling an order that is not in Fulfilling state."
                 );
             }
+
             Status = OrderStatus.WaitingForShipping;
             CreateEvent();
+
+            return Result.Ok();
         }
 
-        public void BeginShipping()
+        public Result BeginShipping()
         {
-            if (Status != OrderStatus.Fulfilling)
+            if (Status != OrderStatus.WaitingForShipping)
             {
-                throw new BusinessException(
-                    "Cannot begin shipping an order that is not fulfilled."
+                return new BusinessError(
+                    "Cannot begin shipping an order that is not in WaitingForShipping state."
                 );
             }
+
             Status = OrderStatus.Shipping;
             CreateEvent();
+
+            return Result.Ok();
         }
 
-        public void FinishShipping()
+        public Result FinishShipping()
         {
             if (Status != OrderStatus.Shipping)
             {
-                throw new BusinessException(
-                    "Cannot finish shipping an order that is not in shipping."
+                return new BusinessError(
+                    "Cannot finish shipping an order that is not in Shipping state."
                 );
             }
+
             Status = OrderStatus.Shipped;
             CreateEvent();
+
+            return Result.Ok();
         }
 
-        public void Complete()
+        public Result Complete()
         {
             if (Status != OrderStatus.Shipped)
             {
-                throw new BusinessException(
-                    "Cannot complete a finished (completed or canceled) order."
-                );
+                return new BusinessError("Cannot complete an order that is not in Shipped state.");
             }
+
             Status = OrderStatus.Completed;
             CreateEvent();
+
+            return Result.Ok();
         }
 
-        public void Cancel()
+        public Result Cancel()
         {
             if (IsFinished)
             {
-                throw new BusinessException(
-                    "Cannot cancel a finished (completed or canceled) order."
+                return new BusinessError(
+                    "Cannot cancel a finished order. (in Completed or Canceled state)"
                 );
             }
+
             Status = OrderStatus.Canceled;
             CreateEvent();
+
+            return Result.Ok();
         }
 
         private void CreateEvent()

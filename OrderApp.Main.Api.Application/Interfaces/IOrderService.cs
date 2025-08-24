@@ -10,7 +10,7 @@ namespace OrderApp.Main.Api.Application.Interfaces
         Task<Result<OrderDetailsDto>> GetDetailsById(int id);
         Task<Result<OrderDetailsDto>> Create(OrderCreateDto dto);
         Task<Result<OrderDetailsDto>> Update(int id, OrderUpdateDto dto);
-        Task<Result> FinishFulfill(int id);
+        Task<Result> Fulfill(int id);
         Task<Result> BeginShipping(int id);
         Task<Result> FinishShipping(int id);
         Task<Result> Complete(int id);
