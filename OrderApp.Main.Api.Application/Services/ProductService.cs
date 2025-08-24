@@ -37,14 +37,14 @@ namespace OrderApp.Main.Api.Application.Services
             return ProductDetailsDto.FromEntity(result.Value);
         }
 
-        public async Task<Result<ProductDetailsDto>> Create(ProductInputDto productInputDto)
+        public async Task<Result<ProductDetailsDto>> Create(ProductInputDto inputDto)
         {
             var newEntity = new Product
             {
-                Name = productInputDto.Name,
-                ShortDescription = productInputDto.ShortDescription,
-                Description = productInputDto.Description,
-                Price = productInputDto.Price,
+                Name = inputDto.Name,
+                ShortDescription = inputDto.ShortDescription,
+                Description = inputDto.Description,
+                Price = inputDto.Price,
                 StockItem = new StockItem { Quantity = 0 },
             };
 
@@ -54,18 +54,22 @@ namespace OrderApp.Main.Api.Application.Services
             return ProductDetailsDto.FromEntity(newEntity);
         }
 
-        public async Task<Result<ProductDetailsDto>> Update(int id, ProductInputDto productInputDto)
+        public async Task<Result<ProductDetailsDto>> Update(int id, ProductInputDto inputDto)
         {
-            var updatedEntity = new Product
+            var result = await unitOfWork.Products.GetDetailsbyId(id);
+            if (result.IsFailed)
             {
-                Id = id,
-                Name = productInputDto.Name,
-                ShortDescription = productInputDto.ShortDescription,
-                Description = productInputDto.Description,
-                Price = productInputDto.Price,
-            };
+                return Result.Fail(result.Errors);
+            }
 
-            unitOfWork.Products.Update(updatedEntity);
+            var product = result.Value;
+
+            product.Name = inputDto.Name;
+            product.ShortDescription = inputDto.ShortDescription;
+            product.Description = inputDto.Description;
+            product.Price = inputDto.Price;
+            product.StockItem.Quantity = inputDto.StockQuantity;
+
             await unitOfWork.SaveChanges();
 
             return await GetDetailsById(id);
