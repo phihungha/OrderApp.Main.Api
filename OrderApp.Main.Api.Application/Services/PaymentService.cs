@@ -1,4 +1,5 @@
-﻿using OrderApp.Main.Api.Application.Interfaces.ApplicationServiceInterfaces;
+﻿using FluentResults;
+using OrderApp.Main.Api.Application.Interfaces.ApplicationServiceInterfaces;
 using OrderApp.Main.Api.Application.Interfaces.InfrastructureServices;
 using OrderApp.Main.Api.Domain.Entities.UserEntities;
 
@@ -8,7 +9,7 @@ namespace OrderApp.Main.Api.Application.Services
     {
         private readonly IVisaPaymentService visaPaymentService = visaPaymentService;
 
-        public async Task Pay(decimal amount, PaymentMethod method)
+        public async Task<Result> Pay(decimal amount, PaymentMethod method)
         {
             var paymentDetails = new PaymentDetails
             {
@@ -18,7 +19,7 @@ namespace OrderApp.Main.Api.Application.Services
                 CardCvv = method.CardCvv,
                 Amount = amount,
             };
-            await visaPaymentService.Pay(paymentDetails);
+            return await visaPaymentService.Pay(paymentDetails);
         }
     }
 }

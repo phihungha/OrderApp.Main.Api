@@ -1,4 +1,6 @@
-﻿namespace OrderApp.Main.Api.Application.Interfaces.InfrastructureServices
+﻿using FluentResults;
+
+namespace OrderApp.Main.Api.Application.Interfaces.InfrastructureServices
 {
     public record PaymentDetails
     {
@@ -11,6 +13,6 @@
 
     public interface IVisaPaymentService
     {
-        Task Pay(PaymentDetails details);
+        Task<Result> Pay(PaymentDetails details);
     }
 }
