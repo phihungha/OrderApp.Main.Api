@@ -1,4 +1,3 @@
-using FluentResults;
 using FluentResults.Extensions.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using OrderApp.Main.Api.Application.DTOs.ProductDTOs;
