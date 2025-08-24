@@ -1,0 +1,6 @@
+{
+  "transactionId": "visa_txn_123456789",
+  "status": "success",
+  "message": "Payment succeeds.",
+  "amount": {{jsonPath request.body '$.amount'}}
+}

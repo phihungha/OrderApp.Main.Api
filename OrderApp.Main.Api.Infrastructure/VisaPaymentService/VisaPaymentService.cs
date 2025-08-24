@@ -1,0 +1,30 @@
+﻿using FluentResults;
+using OrderApp.Main.Api.Application.Interfaces.InfrastructureServices;
+
+namespace OrderApp.Main.Api.Infrastructure.Services.VisaPaymentService
+{
+    internal class VisaPaymentService(IVisaApi visaApiClient) : IVisaPaymentService
+    {
+        private readonly IVisaApi visaApiClient = visaApiClient;
+
+        public async Task<Result> Pay(PaymentDetails details)
+        {
+            var reqDto = new VisaPayReqDto
+            {
+                CardNumber = details.CardNumber,
+                CardHolderName = details.CardHolderName,
+                CardExpiry = details.CardExpiry,
+                CardCvv = details.CardCvv,
+                Amount = details.Amount,
+            };
+
+            var respDto = await visaApiClient.Pay(reqDto);
+
+            if (respDto.Status == "success")
+            {
+                return Result.Ok();
+            }
+            return Result.Fail(respDto.Message);
+        }
+    }
+}

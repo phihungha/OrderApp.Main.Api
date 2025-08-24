@@ -6,6 +6,7 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__Default=Host=default-db;Database=default;Username=web-api;Password=web-api
       - ConnectionStrings__Jobs=Host=jobs-db;Database=jobs;Username=web-api;Password=web-api
+      - VisaApi__HostUrl=http://visa-api-mock:5000
     ports:
       - 8080:8080
       - 8081:8081
@@ -28,3 +29,12 @@ services:
       - POSTGRES_PASSWORD=web-api
     ports:
       - 5433:5433
+  visa-api-mock:
+    image: "wiremock/wiremock:3x"
+    container_name: visa-api-mock
+    ports:
+      - 5000:5000
+    volumes:
+      - ./OrderApp.Main.Api.Infrastructure/ApiMocks/mappings:/home/wiremock/mappings
+      - ./OrderApp.Main.Api.Infrastructure/ApiMocks/response-bodies:/home/wiremock/__files
+    command: ["--port=5000","--global-response-templating", "--verbose"]

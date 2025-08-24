@@ -34,4 +34,8 @@
     <ProjectReference Include="..\OrderApp.Main.Api.Application\OrderApp.Main.Api.Application.csproj" />
     <ProjectReference Include="..\OrderApp.Main.Api.Domain\OrderApp.Main.Api.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ApiMocks\mappings\visa\" />
+    <Folder Include="ApiMocks\response-bodies\visa\" />
+  </ItemGroup>
 </Project>
