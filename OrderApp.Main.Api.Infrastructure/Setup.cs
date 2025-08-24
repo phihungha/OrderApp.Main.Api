@@ -10,6 +10,7 @@ using OrderApp.Main.Api.Application.Interfaces;
 using OrderApp.Main.Api.Application.Interfaces.InfrastructureServices;
 using OrderApp.Main.Api.Infrastructure.Persistence;
 using OrderApp.Main.Api.Infrastructure.Services.VisaPaymentService;
+using OrderApp.Main.Api.Infrastructure.SqsMessageHandler;
 using Refit;
 
 namespace OrderApp.Main.Api.Infrastructure
@@ -61,6 +62,29 @@ namespace OrderApp.Main.Api.Infrastructure
                 .ConfigureHttpClient(c => c.BaseAddress = new Uri(visaApiHostUrl));
 
             builder.Services.AddScoped<IVisaPaymentService, VisaPaymentService>();
+
+            var awsSqsUrls =
+                config.GetSection("AwsSqs:Urls").Get<IDictionary<string, string>>()
+                ?? throw new InvalidOperationException("AwsSqs:Urls is not configured.");
+
+            var orderUpdatesSqsUrl =
+                awsSqsUrls["OrderUpdates"]
+                ?? throw new InvalidOperationException(
+                    "AwsSqs:Urls:OrderUpdates is not configured."
+                );
+            services.AddAWSMessageBus(builder =>
+            {
+                builder.AddSQSPoller(
+                    orderUpdatesSqsUrl,
+                    options =>
+                    {
+                        options.MaxNumberOfConcurrentMessages = 10;
+                        options.WaitTimeSeconds = 20;
+                    }
+                );
+
+                builder.AddMessageHandler<SqsOrderUpdateHandler, OrderUpdateMessage>();
+            });
         }
     }
 }
