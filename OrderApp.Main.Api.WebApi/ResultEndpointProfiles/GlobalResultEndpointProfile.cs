@@ -19,7 +19,8 @@ namespace OrderApp.Main.Api.WebApi.ResultEndpointProfiles
                 return new NotFoundObjectResult(error.Message);
             }
 
-            return base.TransformFailedResultToActionResult(context);
+            var errorDtos = result.Errors.Select(e => new ErrorDto { Message = e.Message });
+            return new BadRequestObjectResult(errorDtos);
         }
 
         public override ActionResult TransformOkNoValueResultToActionResult(
