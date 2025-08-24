@@ -16,21 +16,19 @@ namespace OrderApp.Main.Api.Infrastructure
             var services = builder.Services;
             var config = builder.Configuration;
 
-            var defaultConnectionString = builder.Configuration.GetConnectionString("Default");
-            if (string.IsNullOrEmpty(defaultConnectionString))
-            {
-                throw new InvalidOperationException("ConnectionStrings:Default is not configured.");
-            }
+            var defaultConnectionString =
+                builder.Configuration.GetConnectionString("Default")
+                ?? throw new InvalidOperationException(
+                    "ConnectionStrings:Default is not configured."
+                );
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseNpgsql(defaultConnectionString);
             });
 
-            var jobsConnectionString = builder.Configuration.GetConnectionString("Jobs");
-            if (string.IsNullOrEmpty(jobsConnectionString))
-            {
-                throw new InvalidOperationException("ConnectionStrings:Jobs is not configured.");
-            }
+            var jobsConnectionString =
+                builder.Configuration.GetConnectionString("Jobs")
+                ?? throw new InvalidOperationException("ConnectionStrings:Jobs is not configured.");
             services.AddHangfire(provider =>
                 provider.UsePostgreSqlStorage(c => c.UseNpgsqlConnection(jobsConnectionString))
             );
