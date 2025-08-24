@@ -29,6 +29,32 @@ services:
       - POSTGRES_PASSWORD=web-api
     ports:
       - 5433:5433
+  search-engine:
+    environment:
+    - cluster.name=orderapp-main-api-search-engine
+    - node.name=orderapp-main-api-search-engine-1 
+    - discovery.seed_hosts=orderapp-main-api-search-engine-1 
+    - cluster.initial_cluster_manager_nodes=orderapp-main-api-search-engine-1
+    - bootstrap.memory_lock=true # Disable JVM heap memory swapping
+    - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Set min and max JVM heap sizes to at least 50% of system RAM
+    - "DISABLE_INSTALL_DEMO_CONFIG=true"
+    - "DISABLE_SECURITY_PLUGIN=true"
+    ports:
+      - 9200:9200 # REST API
+      - 9600:9600 # Performance Analyzer
+    ulimits:
+      memlock:
+        soft: -1 # Set memlock to unlimited (no soft or hard limit)
+        hard: -1
+      nofile:
+        soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
+        hard: 65536
+  search-engine-dashboard:
+    environment:  
+     - "DISABLE_SECURITY_DASHBOARDS_PLUGIN=true"
+     - 'OPENSEARCH_HOSTS=["http://search-engine:9200"]'
+    ports:
+      - 5601:5601
   visa-api-mock:
     image: "wiremock/wiremock:3x"
     container_name: visa-api-mock
