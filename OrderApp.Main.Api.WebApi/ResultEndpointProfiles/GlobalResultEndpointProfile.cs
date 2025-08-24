@@ -13,14 +13,16 @@ namespace OrderApp.Main.Api.WebApi.ResultEndpointProfiles
         {
             var result = context.Result;
 
+            List<ErrorDto> errorDto = [];
             if (result.Errors.Count == 1 && result.HasError<NotFoundError>())
             {
                 var error = context.Result.Errors.First();
-                return new NotFoundObjectResult(error.Message);
+                errorDto.Add(new ErrorDto { Message = error.Message });
+                return new NotFoundObjectResult(errorDto);
             }
 
-            var errorDtos = result.Errors.Select(e => new ErrorDto { Message = e.Message });
-            return new BadRequestObjectResult(errorDtos);
+            errorDto.AddRange(result.Errors.Select(e => new ErrorDto { Message = e.Message }));
+            return new BadRequestObjectResult(errorDto);
         }
 
         public override ActionResult TransformOkNoValueResultToActionResult(
