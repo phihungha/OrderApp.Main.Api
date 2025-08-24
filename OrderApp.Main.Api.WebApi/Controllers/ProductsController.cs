@@ -38,7 +38,14 @@ namespace OrderApp.Main.Api.WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<ProductDetailsDto>> Create(ProductInputDto inputDto)
         {
-            var dto = await productService.Create(inputDto);
+            var result = await productService.Create(inputDto);
+
+            if (result.IsFailed)
+            {
+                return result.ToActionResult();
+            }
+
+            var dto = result.Value;
             return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
         }
 

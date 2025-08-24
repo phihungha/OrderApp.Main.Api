@@ -37,7 +37,7 @@ namespace OrderApp.Main.Api.Application.Services
             return ProductDetailsDto.FromEntity(result.Value);
         }
 
-        public async Task<ProductDetailsDto> Create(ProductInputDto productInputDto)
+        public async Task<Result<ProductDetailsDto>> Create(ProductInputDto productInputDto)
         {
             var newEntity = new Product
             {
