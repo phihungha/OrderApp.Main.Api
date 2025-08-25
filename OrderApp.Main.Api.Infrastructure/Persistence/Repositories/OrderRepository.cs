@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 using Microsoft.EntityFrameworkCore;
-using OrderApp.Main.Api.Application.Interfaces;
+using OrderApp.Main.Api.Application.Interfaces.Repositories;
 using OrderApp.Main.Api.Domain.Entities.OrderEntities;
 using OrderApp.Main.Api.Domain.Errors;
 

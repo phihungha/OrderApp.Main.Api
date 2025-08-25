@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using OrderApp.Main.Api.Application.Interfaces.Repositories;
 
 namespace OrderApp.Main.Api.Application.Interfaces
 {

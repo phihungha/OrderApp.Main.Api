@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using OrderApp.Main.Api.Application.DTOs.ProductDTOs;
 
-namespace OrderApp.Main.Api.Application.Interfaces
+namespace OrderApp.Main.Api.Application.Interfaces.ApplicationServices
 {
     public interface IProductService
     {

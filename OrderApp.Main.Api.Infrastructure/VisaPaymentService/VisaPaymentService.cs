@@ -1,5 +1,5 @@
 ﻿using FluentResults;
-using OrderApp.Main.Api.Application.Interfaces.InfrastructureServices;
+using OrderApp.Main.Api.Application.Interfaces.ExternalServices;
 using OrderApp.Main.Api.Domain.Errors;
 
 namespace OrderApp.Main.Api.Infrastructure.Services.VisaPaymentService

@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using OrderApp.Main.Api.Application.DTOs.ProductDTOs;
 using OrderApp.Main.Api.Application.Interfaces;
+using OrderApp.Main.Api.Application.Interfaces.ApplicationServices;
 using OrderApp.Main.Api.Domain.Entities.ProductEntities;
 using OrderApp.Main.Api.Domain.Entities.StockItemEntities;
 

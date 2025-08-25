@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using OrderApp.Main.Api.Domain.Entities.ProductEntities;
 
-namespace OrderApp.Main.Api.Application.Interfaces
+namespace OrderApp.Main.Api.Application.Interfaces.Repositories
 {
     public interface IProductRepository : IRepository<Product>
     {

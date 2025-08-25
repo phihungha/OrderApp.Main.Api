@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using OrderApp.Main.Api.Application.DTOs.OrderDTOs;
 using OrderApp.Main.Api.Application.Interfaces;
+using OrderApp.Main.Api.Application.Interfaces.ApplicationServices;
 using OrderApp.Main.Api.Domain.Entities.OrderEntities;
 using OrderApp.Main.Api.Domain.Errors;
 

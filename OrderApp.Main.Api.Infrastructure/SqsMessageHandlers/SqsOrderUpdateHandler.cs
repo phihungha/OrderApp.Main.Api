@@ -1,6 +1,6 @@
 ﻿using AWS.Messaging;
 using FluentResults;
-using OrderApp.Main.Api.Application.Interfaces;
+using OrderApp.Main.Api.Application.Interfaces.ApplicationServices;
 
 namespace OrderApp.Main.Api.Infrastructure.SqsMessageHandler
 {

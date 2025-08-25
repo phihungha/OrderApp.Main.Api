@@ -2,7 +2,7 @@
 using OrderApp.Main.Api.Application.DTOs.OrderDTOs;
 using OrderApp.Main.Api.Domain.Entities.OrderEntities;
 
-namespace OrderApp.Main.Api.Application.Interfaces
+namespace OrderApp.Main.Api.Application.Interfaces.ApplicationServices
 {
     public interface IOrderService
     {

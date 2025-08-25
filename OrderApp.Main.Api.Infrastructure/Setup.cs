@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OrderApp.Main.Api.Application.Interfaces;
-using OrderApp.Main.Api.Application.Interfaces.InfrastructureServices;
+using OrderApp.Main.Api.Application.Interfaces.ExternalServices;
 using OrderApp.Main.Api.Infrastructure.Persistence;
 using OrderApp.Main.Api.Infrastructure.Services.VisaPaymentService;
 using OrderApp.Main.Api.Infrastructure.SqsMessageHandler;
