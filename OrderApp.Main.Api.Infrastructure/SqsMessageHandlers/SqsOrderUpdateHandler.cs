@@ -4,8 +4,10 @@ using OrderApp.Main.Api.Application.Interfaces;
 
 namespace OrderApp.Main.Api.Infrastructure.SqsMessageHandler
 {
-    public record OrderUpdateMessage
+    public record OrderStatusUpdateMessage
     {
+        public static string MessageType => "Order.StatusUpdate";
+
         public enum StatusOptions
         {
             Shipping,
@@ -18,12 +20,12 @@ namespace OrderApp.Main.Api.Infrastructure.SqsMessageHandler
     }
 
     public class SqsOrderUpdateHandler(IOrderService orderService)
-        : IMessageHandler<OrderUpdateMessage>
+        : IMessageHandler<OrderStatusUpdateMessage>
     {
         private readonly IOrderService orderService = orderService;
 
         public async Task<MessageProcessStatus> HandleAsync(
-            MessageEnvelope<OrderUpdateMessage> messageEnvelope,
+            MessageEnvelope<OrderStatusUpdateMessage> messageEnvelope,
             CancellationToken token = default
         )
         {
@@ -37,13 +39,15 @@ namespace OrderApp.Main.Api.Infrastructure.SqsMessageHandler
 
             var result = orderStatus switch
             {
-                OrderUpdateMessage.StatusOptions.Shipping => await orderService.BeginShipping(
+                OrderStatusUpdateMessage.StatusOptions.Shipping => await orderService.BeginShipping(
                     orderId
                 ),
-                OrderUpdateMessage.StatusOptions.Shipped => await orderService.FinishShipping(
+                OrderStatusUpdateMessage.StatusOptions.Shipped => await orderService.FinishShipping(
                     orderId
                 ),
-                OrderUpdateMessage.StatusOptions.Completed => await orderService.Complete(orderId),
+                OrderStatusUpdateMessage.StatusOptions.Completed => await orderService.Complete(
+                    orderId
+                ),
                 _ => Result.Fail("Invalid Status."),
             };
 

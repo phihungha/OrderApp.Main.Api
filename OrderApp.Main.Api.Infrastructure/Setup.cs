@@ -83,7 +83,9 @@ namespace OrderApp.Main.Api.Infrastructure
                     }
                 );
 
-                builder.AddMessageHandler<SqsOrderUpdateHandler, OrderUpdateMessage>();
+                builder.AddMessageHandler<SqsOrderUpdateHandler, OrderStatusUpdateMessage>(
+                    OrderStatusUpdateMessage.MessageType
+                );
             });
         }
     }
