@@ -1,4 +1,5 @@
-﻿using OrderApp.Main.Api.Domain.Entities.StockItemEntities;
+﻿using OrderApp.Main.Api.Domain.Entities.OrderEntities;
+using OrderApp.Main.Api.Domain.Entities.StockItemEntities;
 
 namespace OrderApp.Main.Api.Domain.Entities.ProductEntities
 {
@@ -9,6 +10,9 @@ namespace OrderApp.Main.Api.Domain.Entities.ProductEntities
         public string? ShortDescription { get; set; }
         public string? Description { get; set; }
         public decimal Price { get; set; }
+
         public StockItem StockItem { get; set; } = null!;
+
+        public ICollection<Order> Orders { get; } = [];
     }
 }

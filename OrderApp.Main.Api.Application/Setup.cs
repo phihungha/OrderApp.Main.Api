@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OrderApp.Main.Api.Application.Interfaces;
-using OrderApp.Main.Api.Application.Interfaces.ApplicationServiceInterfaces;
+using OrderApp.Main.Api.Application.Interfaces.ApplicationServices;
 using OrderApp.Main.Api.Application.Services;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
@@ -15,6 +14,7 @@ namespace OrderApp.Main.Api.Application
 
             services.AddFluentValidationAutoValidation();
 
+            services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
         }

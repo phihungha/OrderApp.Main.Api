@@ -1,7 +1,8 @@
 ﻿using FluentResults;
 using Microsoft.EntityFrameworkCore;
-using OrderApp.Main.Api.Application.Errors;
 using OrderApp.Main.Api.Application.Interfaces;
+using OrderApp.Main.Api.Application.Interfaces.Repositories;
+using OrderApp.Main.Api.Domain.Errors;
 using OrderApp.Main.Api.Infrastructure.Persistence.Repositories;
 
 namespace OrderApp.Main.Api.Infrastructure.Persistence
@@ -10,6 +11,7 @@ namespace OrderApp.Main.Api.Infrastructure.Persistence
     {
         private readonly AppDbContext dbContext = dbContext;
 
+        public IOrderRepository Orders { get; } = new OrderRepository(dbContext);
         public IProductRepository Products { get; } = new ProductRepository(dbContext);
 
         public async Task<Result> SaveChanges()

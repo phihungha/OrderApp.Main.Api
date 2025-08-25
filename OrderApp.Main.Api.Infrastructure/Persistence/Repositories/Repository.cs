@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OrderApp.Main.Api.Application.Interfaces;
+using OrderApp.Main.Api.Application.Interfaces.Repositories;
 
 namespace OrderApp.Main.Api.Infrastructure.Persistence.Repositories
 {

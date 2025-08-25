@@ -1,7 +1,7 @@
 using FluentResults.Extensions.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using OrderApp.Main.Api.Application.DTOs.ProductDTOs;
-using OrderApp.Main.Api.Application.Interfaces;
+using OrderApp.Main.Api.Application.Interfaces.ApplicationServices;
 
 namespace OrderApp.Main.Api.WebApi.Controllers
 {

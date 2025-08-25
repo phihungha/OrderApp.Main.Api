@@ -1,8 +1,8 @@
 ﻿using FluentResults;
 using Microsoft.EntityFrameworkCore;
-using OrderApp.Main.Api.Application.Errors;
-using OrderApp.Main.Api.Application.Interfaces;
+using OrderApp.Main.Api.Application.Interfaces.Repositories;
 using OrderApp.Main.Api.Domain.Entities.ProductEntities;
+using OrderApp.Main.Api.Domain.Errors;
 
 namespace OrderApp.Main.Api.Infrastructure.Persistence.Repositories
 {
@@ -20,6 +20,11 @@ namespace OrderApp.Main.Api.Infrastructure.Persistence.Repositories
             }
 
             return await query.OrderBy(e => e.Id).ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<Product>> GetManyByIdsAsync(IEnumerable<int> ids)
+        {
+            return await Entities.AsNoTracking().Where(e => ids.Contains(e.Id)).ToListAsync();
         }
 
         public async Task<Result<Product>> GetDetailsbyId(int id)

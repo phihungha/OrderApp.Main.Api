@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: OrderApp.Main.Api.WebApi/Dockerfile
-    depends_on: [ "default-db", "jobs-db", "search-engine" ]
+    depends_on: ["default-db", "jobs-db", "search-engine"]
   default-db:
     container_name: orderapp-main-api-default-db
     image: postgres:17

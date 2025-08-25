@@ -5,4 +5,7 @@
     <Nullable>enable</Nullable>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentResults" Version="4.0.0" />
+  </ItemGroup>
 </Project>

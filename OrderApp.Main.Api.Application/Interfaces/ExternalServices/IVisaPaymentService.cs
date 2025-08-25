@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 
-namespace OrderApp.Main.Api.Application.Interfaces.InfrastructureServices
+namespace OrderApp.Main.Api.Application.Interfaces.ExternalServices
 {
     public record PaymentDetails
     {

@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using FluentResults.Extensions.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
-using OrderApp.Main.Api.Application.Errors;
+using OrderApp.Main.Api.Domain.Errors;
 
 namespace OrderApp.Main.Api.WebApi.ResultEndpointProfiles
 {

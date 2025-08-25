@@ -1,5 +1,6 @@
 ﻿using FluentResults;
-using OrderApp.Main.Api.Application.Interfaces.InfrastructureServices;
+using OrderApp.Main.Api.Application.Interfaces.ExternalServices;
+using OrderApp.Main.Api.Domain.Errors;
 
 namespace OrderApp.Main.Api.Infrastructure.Services.VisaPaymentService
 {
@@ -24,7 +25,7 @@ namespace OrderApp.Main.Api.Infrastructure.Services.VisaPaymentService
             {
                 return Result.Ok();
             }
-            return Result.Fail(respDto.Message);
+            return new BusinessError(respDto.Message);
         }
     }
 }

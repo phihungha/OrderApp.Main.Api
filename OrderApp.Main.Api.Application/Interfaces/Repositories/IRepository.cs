@@ -1,4 +1,4 @@
-﻿namespace OrderApp.Main.Api.Application.Interfaces
+﻿namespace OrderApp.Main.Api.Application.Interfaces.Repositories
 {
     public interface IRepository<TEntity>
         where TEntity : class
