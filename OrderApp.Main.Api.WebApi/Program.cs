@@ -3,6 +3,7 @@ using FluentResults.Extensions.AspNetCore;
 using OrderApp.Main.Api.Application;
 using OrderApp.Main.Api.Infrastructure;
 using OrderApp.Main.Api.WebApi.ResultEndpointProfiles;
+using OrderApp.Main.Api.WebApi.SqsHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ AspNetCoreResult.Setup(config => config.DefaultProfile = new GlobalResultEndpoin
 
 builder.AddInfrastructureServices();
 builder.AddApplicationServices();
+builder.AddSqsHandlers();
 
 var app = builder.Build();
 

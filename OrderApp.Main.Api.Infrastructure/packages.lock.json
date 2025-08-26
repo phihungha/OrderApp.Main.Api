@@ -47,36 +47,6 @@
           "System.Threading.Tasks.Extensions": "4.5.4"
         }
       },
-      "Hangfire.AspNetCore": {
-        "type": "Direct",
-        "requested": "[1.8.21, )",
-        "resolved": "1.8.21",
-        "contentHash": "G3yP92rPC313zRA1DIaROmF6UYB9NRtMHy64CCq4StqWmyUuFQQsYgZxo+Kp6gd2CbjaSI8JN8canTMYSGfrMw==",
-        "dependencies": {
-          "Hangfire.NetCore": "[1.8.21]"
-        }
-      },
-      "Hangfire.Core": {
-        "type": "Direct",
-        "requested": "[1.8.21, )",
-        "resolved": "1.8.21",
-        "contentHash": "UfIDfDKJTue82ShKV/HHEBScAIJMnuiS8c5jcLHThY8i8O0eibCcNjFkVqlvY9cnDiOBZ7EBGWJ8horH9Ykq+g==",
-        "dependencies": {
-          "Newtonsoft.Json": "11.0.1"
-        }
-      },
-      "Hangfire.PostgreSql": {
-        "type": "Direct",
-        "requested": "[1.20.12, )",
-        "resolved": "1.20.12",
-        "contentHash": "KvozigeVgbYSinFmaj5qQWRaBG7ey/S73UP6VLIOPcP1UrZO0/6hSw4jN53TKpWP2UsiMuYONRmQbFDxGAi4ug==",
-        "dependencies": {
-          "Dapper": "2.0.123",
-          "Hangfire.Core": "1.8.0",
-          "Microsoft.CSharp": "4.7.0",
-          "Npgsql": "6.0.11"
-        }
-      },
       "Microsoft.EntityFrameworkCore": {
         "type": "Direct",
         "requested": "[9.0.8, )",
@@ -224,11 +194,6 @@
           "AWSSDK.Core": "[4.0.0, 5.0.0)"
         }
       },
-      "Dapper": {
-        "type": "Transitive",
-        "resolved": "2.0.123",
-        "contentHash": "RDFF4rBLLmbpi6pwkY7q/M6UXHRJEOerplDGE5jwEkP/JGJnBauAClYavNKJPW1yOTWRPIyfj4is3EaJxQXILQ=="
-      },
       "FluentValidation": {
         "type": "Transitive",
         "resolved": "12.0.0",
@@ -249,17 +214,6 @@
         "contentHash": "px1HWHYBD20PuCUgz/mEl/QcBsikW5nbdtR5whllwMIyJ4FJs03nGXe5ocHEre/x3CX72hJBnX7bteqkZwlcfA==",
         "dependencies": {
           "NETStandard.Library": "1.6.1"
-        }
-      },
-      "Hangfire.NetCore": {
-        "type": "Transitive",
-        "resolved": "1.8.21",
-        "contentHash": "NR8BvQqgvVstgY/YZVisuV/XdkKSZGiD+5b+NABuGxu/xDEhycFHS1uIC9zhIYkPr1tThGoThRIH07JWxPZTvQ==",
-        "dependencies": {
-          "Hangfire.Core": "[1.8.21]",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.0.0",
-          "Microsoft.Extensions.Hosting.Abstractions": "3.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "3.0.0"
         }
       },
       "Humanizer.Core": {

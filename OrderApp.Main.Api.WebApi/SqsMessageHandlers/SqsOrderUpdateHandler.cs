@@ -2,9 +2,9 @@
 using FluentResults;
 using OrderApp.Main.Api.Application.Interfaces.ApplicationServices;
 
-namespace OrderApp.Main.Api.Infrastructure.SqsMessageHandler
+namespace OrderApp.Main.Api.WebApi.SqsMessageHandlers
 {
-    public record OrderStatusUpdateMessage
+    public record OrderUpdateMessage
     {
         public static string MessageType => "Order.StatusUpdate";
 
@@ -20,12 +20,12 @@ namespace OrderApp.Main.Api.Infrastructure.SqsMessageHandler
     }
 
     public class SqsOrderUpdateHandler(IOrderService orderService)
-        : IMessageHandler<OrderStatusUpdateMessage>
+        : IMessageHandler<OrderUpdateMessage>
     {
         private readonly IOrderService orderService = orderService;
 
         public async Task<MessageProcessStatus> HandleAsync(
-            MessageEnvelope<OrderStatusUpdateMessage> messageEnvelope,
+            MessageEnvelope<OrderUpdateMessage> messageEnvelope,
             CancellationToken token = default
         )
         {
@@ -39,15 +39,13 @@ namespace OrderApp.Main.Api.Infrastructure.SqsMessageHandler
 
             var result = orderStatus switch
             {
-                OrderStatusUpdateMessage.StatusOptions.Shipping => await orderService.BeginShipping(
+                OrderUpdateMessage.StatusOptions.Shipping => await orderService.BeginShipping(
                     orderId
                 ),
-                OrderStatusUpdateMessage.StatusOptions.Shipped => await orderService.FinishShipping(
+                OrderUpdateMessage.StatusOptions.Shipped => await orderService.FinishShipping(
                     orderId
                 ),
-                OrderStatusUpdateMessage.StatusOptions.Completed => await orderService.Complete(
-                    orderId
-                ),
+                OrderUpdateMessage.StatusOptions.Completed => await orderService.Complete(orderId),
                 _ => Result.Fail("Invalid Status."),
             };
 
