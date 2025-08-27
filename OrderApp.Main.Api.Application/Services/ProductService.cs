@@ -2,28 +2,41 @@
 using OrderApp.Main.Api.Application.DTOs.ProductDTOs;
 using OrderApp.Main.Api.Application.Interfaces;
 using OrderApp.Main.Api.Application.Interfaces.ApplicationServices;
+using OrderApp.Main.Api.Application.Interfaces.ExternalServices;
 using OrderApp.Main.Api.Domain.Entities.ProductEntities;
 using OrderApp.Main.Api.Domain.Entities.StockItemEntities;
 
 namespace OrderApp.Main.Api.Application.Services
 {
-    public class ProductService(IUnitOfWork unitOfWork) : IProductService
+    public class ProductService(IUnitOfWork unitOfWork, IProductSearchService productSearchService)
+        : IProductService
     {
         private readonly IUnitOfWork unitOfWork = unitOfWork;
+        private readonly IProductSearchService productSearchService = productSearchService;
 
         public async Task<IReadOnlyList<ProductCatalogItemDto>> GetCatalog(
             string? searchQuery = null
         )
         {
-            return await Task.FromResult(new List<ProductCatalogItemDto>());
+            var productIndexItems = await productSearchService.Search(searchQuery);
+
+            return productIndexItems
+                .Select(i => new ProductCatalogItemDto
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    ShortDescription = i.ShortDescription,
+                    Price = i.Price,
+                })
+                .ToList();
         }
 
         public async Task<IReadOnlyList<ProductCatalogItemDto>> GetAdminCatalog(
             string? nameContains = null
         )
         {
-            var entities = await unitOfWork.Products.GetAllAsync(nameContains);
-            return entities.Select(ProductCatalogItemDto.FromEntity).ToList();
+            var products = await unitOfWork.Products.GetAllAsync(nameContains);
+            return products.Select(ProductCatalogItemDto.FromEntity).ToList();
         }
 
         public async Task<Result<ProductDetailsDto>> GetDetailsById(int id)
@@ -40,19 +53,28 @@ namespace OrderApp.Main.Api.Application.Services
 
         public async Task<Result<ProductDetailsDto>> Create(ProductInputDto inputDto)
         {
-            var newEntity = new Product
+            var product = new Product
             {
                 Name = inputDto.Name,
                 ShortDescription = inputDto.ShortDescription,
                 Description = inputDto.Description,
                 Price = inputDto.Price,
-                StockItem = new StockItem { Quantity = 0 },
+                StockItem = new StockItem { Quantity = inputDto.StockQuantity },
             };
 
-            unitOfWork.Products.Add(newEntity);
+            unitOfWork.Products.Add(product);
             await unitOfWork.SaveChanges();
 
-            return ProductDetailsDto.FromEntity(newEntity);
+            var productSearchIndexDoc = new ProductSearchIndexDoc
+            {
+                Id = product.Id,
+                Name = product.Name,
+                ShortDescription = product.ShortDescription,
+                Price = product.Price,
+            };
+            await productSearchService.IndexDocument(productSearchIndexDoc);
+
+            return ProductDetailsDto.FromEntity(product);
         }
 
         public async Task<Result<ProductDetailsDto>> Update(int id, ProductInputDto inputDto)
@@ -73,12 +95,28 @@ namespace OrderApp.Main.Api.Application.Services
 
             await unitOfWork.SaveChanges();
 
+            var productSearchIndexDoc = new ProductSearchIndexDoc
+            {
+                Id = product.Id,
+                Name = product.Name,
+                ShortDescription = product.ShortDescription,
+                Price = product.Price,
+            };
+            await productSearchService.IndexDocument(productSearchIndexDoc);
+
             return await GetDetailsById(id);
         }
 
         public async Task<Result> Delete(int id)
         {
-            return await unitOfWork.Products.DeleteById(id);
+            var result = await unitOfWork.Products.DeleteById(id);
+
+            if (result.IsSuccess)
+            {
+                await productSearchService.DeleteDocument(id);
+            }
+
+            return result;
         }
     }
 }

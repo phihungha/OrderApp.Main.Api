@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: OrderApp.Main.Api.WebApi/Dockerfile
-    depends_on: ["default-db", "jobs", "search-engine"]
+    depends_on: ["default-db", "jobs", "opensearch"]
   jobs:
     container_name: orderapp-main-api-jobs
     image: ${DOCKER_REGISTRY-}orderapp-main-api-jobs:v0.1.0
@@ -23,15 +23,15 @@ services:
     image: postgres:17
     volumes:
       - orderapp-main-api-jobs-db-data:/var/lib/postgresql/data
-  search-engine:
+  opensearch:
     image: opensearchproject/opensearch:3
-    container_name: orderapp-main-api-search-engine
+    container_name: orderapp-main-api-opensearch
     volumes:
       - orderapp-main-api-search-engine-data:/usr/share/opensearch/data
-  search-engine-dashboard:
-    container_name: orderapp-main-api-search-engine-dashboard
+  opensearch-dashboard:
+    container_name: orderapp-main-api-opensearch-dashboard
     image: opensearchproject/opensearch-dashboards:3
-    depends_on: ["search-engine"]
+    depends_on: ["opensearch"]
 
 volumes:
     orderapp-main-api-default-db-data:

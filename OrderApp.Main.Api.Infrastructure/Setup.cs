@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using OpenSearch.Client;
 using OrderApp.Main.Api.Application.Interfaces;
 using OrderApp.Main.Api.Application.Interfaces.ExternalServices;
 using OrderApp.Main.Api.Infrastructure.JobRequest;
@@ -19,11 +20,12 @@ namespace OrderApp.Main.Api.Infrastructure
         public static void AddInfrastructureServices(this IHostApplicationBuilder builder)
         {
             var services = builder.Services;
-            var config = builder.Configuration;
+            var configuration = builder.Configuration;
 
-            SetupUnitOfWork(config, services);
-            SetupVisaPaymentService(config, services);
-            SetupSqsPublishers(config, services);
+            SetupUnitOfWork(configuration, services);
+            SetupProductSearchService(configuration, services);
+            SetupVisaPaymentService(configuration, services);
+            SetupSqsPublishers(configuration, services);
 
             builder.Services.AddScoped<IJobRequestService, JobRequestService>();
         }
@@ -33,17 +35,34 @@ namespace OrderApp.Main.Api.Infrastructure
             IServiceCollection services
         )
         {
-            var defaultConnectionString =
+            var connectionString =
                 configuration.GetConnectionString("Default")
                 ?? throw new InvalidOperationException(
                     "ConnectionStrings:Default is not configured."
                 );
+
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseNpgsql(defaultConnectionString);
+                options.UseNpgsql(connectionString);
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+        }
+
+        private static void SetupProductSearchService(
+            IConfiguration configuration,
+            IServiceCollection services
+        )
+        {
+            var hostUrl =
+                configuration.GetValue<string>("OpenSearchApiClient:Url")
+                ?? throw new InvalidOperationException(
+                    "OpenSearchClient:Url configuration is missing or empty."
+                );
+            var connetionSettings = new ConnectionSettings(new Uri(hostUrl));
+
+            services.AddSingleton<IOpenSearchClient>(new OpenSearchClient(connetionSettings));
+            services.AddSingleton<IProductSearchService, ProductSearchService>();
         }
 
         private static void SetupVisaPaymentService(
@@ -51,10 +70,10 @@ namespace OrderApp.Main.Api.Infrastructure
             IServiceCollection services
         )
         {
-            var visaApiHostUrl = configuration.GetValue<string>("VisaApi:HostUrl");
-            if (string.IsNullOrEmpty(visaApiHostUrl))
+            var hostUrl = configuration.GetValue<string>("VisaApiClient:Url");
+            if (string.IsNullOrEmpty(hostUrl))
             {
-                throw new Exception("VisaApi:HostUrl configuration is missing or empty.");
+                throw new Exception("VisaPaymentClient:Url configuration is missing or empty.");
             }
             services
                 .AddRefitClient<IVisaApi>(
@@ -68,7 +87,7 @@ namespace OrderApp.Main.Api.Infrastructure
                         ),
                     }
                 )
-                .ConfigureHttpClient(c => c.BaseAddress = new Uri(visaApiHostUrl));
+                .ConfigureHttpClient(c => c.BaseAddress = new Uri(hostUrl));
 
             services.AddScoped<IVisaPaymentService, VisaPaymentService>();
         }

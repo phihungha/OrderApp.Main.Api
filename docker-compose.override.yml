@@ -4,8 +4,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
-      - ConnectionStrings__Default=Host=default-db;Database=default;Username=web-api;Password=web-api
-      - VisaApi__HostUrl=http://visa-api-mock:5000
+      - ConnectionStrings__Default=Host=default-db;Database=default;Username=web-api;Password=web-api;Include Error Detail=True
+      - OpenSearchApiClient__Url=http://opensearch:9200
+      - VisaApiClient__Url=http://visa-api-mock:5000
     ports:
       - 8080:8080
       - 8081:8081
@@ -20,7 +21,8 @@ services:
       - DOTNET_ENVIRONMENT=Development
       - ConnectionStrings__Default=Host=default-db;Database=default;Username=web-api;Password=web-api
       - ConnectionStrings__Jobs=Host=jobs-db;Database=jobs;Username=web-api;Password=web-api
-      - VisaApi__HostUrl=http://visa-api-mock:5000
+      - OpenSearchApiClient__Url=http://opensearch:9200
+      - VisaApiClient__Url=http://visa-api-mock:5000
     volumes:
       - ~/.aws:/home/app/.aws:ro
   default-db:
@@ -37,12 +39,12 @@ services:
       - POSTGRES_PASSWORD=web-api
     ports:
       - 5433:5433
-  search-engine:
+  opensearch:
     environment:
-    - cluster.name=orderapp-main-api-search-engine
-    - node.name=orderapp-main-api-search-engine-1 
-    - discovery.seed_hosts=orderapp-main-api-search-engine-1 
-    - cluster.initial_cluster_manager_nodes=orderapp-main-api-search-engine-1
+    - cluster.name=orderapp-main-api-opensearch
+    - node.name=orderapp-main-api-opensearch-1 
+    - discovery.seed_hosts=orderapp-main-api-opensearch-1 
+    - cluster.initial_cluster_manager_nodes=orderapp-main-api-opensearch-1
     - bootstrap.memory_lock=true # Disable JVM heap memory swapping
     - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Set min and max JVM heap sizes to at least 50% of system RAM
     - "DISABLE_INSTALL_DEMO_CONFIG=true"
@@ -57,10 +59,10 @@ services:
       nofile:
         soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
         hard: 65536
-  search-engine-dashboard:
-    environment:  
+  opensearch-dashboard:
+    environment:
      - "DISABLE_SECURITY_DASHBOARDS_PLUGIN=true"
-     - 'OPENSEARCH_HOSTS=["http://search-engine:9200"]'
+     - 'OPENSEARCH_HOSTS=["http://opensearch:9200"]'
     ports:
       - 5601:5601
   visa-api-mock:
