@@ -33,8 +33,10 @@ namespace OrderApp.Main.Api.Infrastructure.Persistence.Repositories
         public async Task<Result<Order>> GetDetailsById(int id)
         {
             var entity = await Entities
+                .AsSingleQuery()
                 .Include(e => e.Lines)
                 .ThenInclude(l => l.Product)
+                .ThenInclude(l => l.StockItem)
                 .Include(e => e.Events)
                 .FirstOrDefaultAsync(e => e.Id == id);
             return entity is null ? new NotFoundError() : entity;
