@@ -80,8 +80,15 @@ namespace OrderApp.Main.Api.Application.Services
             }
 
             var order = result.Value;
-            order.BeginFulfill();
 
+            order.BeginFulfill();
+            var fulfillSaveChangesResult = await unitOfWork.SaveChanges();
+            if (result.IsFailed)
+            {
+                return Result.Fail(result.Errors);
+            }
+
+            order.FinishFulfill();
             return await unitOfWork.SaveChanges();
         }
 
@@ -113,9 +120,6 @@ namespace OrderApp.Main.Api.Application.Services
             await unitOfWork.SaveChanges();
             return OrderDetailsDto.FromEntity(order);
         }
-
-        public async Task<Result> FinishFulfill(int id) =>
-            await UpdateStatus(id, order => order.FinishFulfill());
 
         public async Task<Result> BeginShipping(int id) =>
             await UpdateStatus(id, order => order.BeginShipping());
