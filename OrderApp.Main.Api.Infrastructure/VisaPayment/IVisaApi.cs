@@ -1,6 +1,6 @@
 ﻿using Refit;
 
-namespace OrderApp.Main.Api.Infrastructure.Services.VisaPaymentService
+namespace OrderApp.Main.Api.Infrastructure.VisaPayment
 {
     public interface IVisaApi
     {

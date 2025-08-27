@@ -2,11 +2,11 @@
 using FluentResults;
 using OrderApp.Main.Api.Application.Interfaces.ApplicationServices;
 
-namespace OrderApp.Main.Api.Infrastructure.SqsMessageHandler
+namespace OrderApp.Main.Api.WebApi.SqsMessageHandlers
 {
-    public record OrderStatusUpdateMessage
+    public record OrderStatusUpdateMessageDto
     {
-        public static string MessageType => "Order.StatusUpdate";
+        public const string MessageType = "Order.StatusUpdate";
 
         public enum StatusOptions
         {
@@ -19,13 +19,13 @@ namespace OrderApp.Main.Api.Infrastructure.SqsMessageHandler
         public required StatusOptions Status { get; set; }
     }
 
-    public class SqsOrderUpdateHandler(IOrderService orderService)
-        : IMessageHandler<OrderStatusUpdateMessage>
+    public class OrderStatusUpdateSqsHandler(IOrderService orderService)
+        : IMessageHandler<OrderStatusUpdateMessageDto>
     {
         private readonly IOrderService orderService = orderService;
 
         public async Task<MessageProcessStatus> HandleAsync(
-            MessageEnvelope<OrderStatusUpdateMessage> messageEnvelope,
+            MessageEnvelope<OrderStatusUpdateMessageDto> messageEnvelope,
             CancellationToken token = default
         )
         {
@@ -39,13 +39,11 @@ namespace OrderApp.Main.Api.Infrastructure.SqsMessageHandler
 
             var result = orderStatus switch
             {
-                OrderStatusUpdateMessage.StatusOptions.Shipping => await orderService.BeginShipping(
-                    orderId
-                ),
-                OrderStatusUpdateMessage.StatusOptions.Shipped => await orderService.FinishShipping(
-                    orderId
-                ),
-                OrderStatusUpdateMessage.StatusOptions.Completed => await orderService.Complete(
+                OrderStatusUpdateMessageDto.StatusOptions.Shipping =>
+                    await orderService.BeginShipping(orderId),
+                OrderStatusUpdateMessageDto.StatusOptions.Shipped =>
+                    await orderService.FinishShipping(orderId),
+                OrderStatusUpdateMessageDto.StatusOptions.Completed => await orderService.Complete(
                     orderId
                 ),
                 _ => Result.Fail("Invalid Status."),

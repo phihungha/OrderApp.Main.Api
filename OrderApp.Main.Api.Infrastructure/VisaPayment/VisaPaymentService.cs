@@ -2,9 +2,9 @@
 using OrderApp.Main.Api.Application.Interfaces.ExternalServices;
 using OrderApp.Main.Api.Domain.Errors;
 
-namespace OrderApp.Main.Api.Infrastructure.Services.VisaPaymentService
+namespace OrderApp.Main.Api.Infrastructure.VisaPayment
 {
-    internal class VisaPaymentService(IVisaApi visaApiClient) : IVisaPaymentService
+    public class VisaPaymentService(IVisaApi visaApiClient) : IVisaPaymentService
     {
         private readonly IVisaApi visaApiClient = visaApiClient;
 

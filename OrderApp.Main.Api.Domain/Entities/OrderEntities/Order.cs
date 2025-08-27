@@ -23,6 +23,17 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
             set => _ = value;
         }
 
+        public void CreateFirstEvent()
+        {
+            var eventEntity = new OrderEvent
+            {
+                OrderId = Id,
+                Status = OrderStatus.Pending,
+                Timestamp = DateTime.UtcNow,
+            };
+            Events.Add(eventEntity);
+        }
+
         public void SetOrderLines(IEnumerable<OrderLine> lines)
         {
             if (Status != OrderStatus.Pending)
@@ -39,24 +50,11 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
             }
         }
 
-        public void CreateFirstEvent()
-        {
-            var eventEntity = new OrderEvent
-            {
-                OrderId = Id,
-                Status = OrderStatus.Pending,
-                Timestamp = DateTime.UtcNow,
-            };
-            Events.Add(eventEntity);
-        }
-
         public Result BeginFulfill()
         {
-            if (IsFinished)
+            if (Status != OrderStatus.Pending)
             {
-                return new BusinessError(
-                    "Cannot begin fulfilling a finished order. (in Completed or Canceled state)"
-                );
+                return new BusinessError("Cannot begin fulfilling a non-pending order.");
             }
 
             foreach (var line in Lines)
