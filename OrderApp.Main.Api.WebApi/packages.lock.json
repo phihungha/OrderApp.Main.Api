@@ -1730,6 +1730,7 @@
           "AWSSDK.SSOOIDC": "[4.0.0.19, )",
           "FluentResults": "[4.0.0, )",
           "Microsoft.EntityFrameworkCore": "[9.0.8, )",
+          "Microsoft.EntityFrameworkCore.Relational": "[9.0.8, )",
           "Microsoft.Extensions.Hosting.Abstractions": "[9.0.8, )",
           "Newtonsoft.Json": "[13.0.3, )",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "[9.0.4, )",
