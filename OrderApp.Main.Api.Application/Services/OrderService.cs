@@ -2,14 +2,17 @@
 using OrderApp.Main.Api.Application.DTOs.OrderDTOs;
 using OrderApp.Main.Api.Application.Interfaces;
 using OrderApp.Main.Api.Application.Interfaces.ApplicationServices;
+using OrderApp.Main.Api.Application.Interfaces.ExternalServices;
 using OrderApp.Main.Api.Domain.Entities.OrderEntities;
 using OrderApp.Main.Api.Domain.Errors;
 
 namespace OrderApp.Main.Api.Application.Services
 {
-    public class OrderService(IUnitOfWork unitOfWork) : IOrderService
+    public class OrderService(IUnitOfWork unitOfWork, IJobRequestService jobRequestService)
+        : IOrderService
     {
         private readonly IUnitOfWork unitOfWork = unitOfWork;
+        private readonly IJobRequestService jobRequestService = jobRequestService;
 
         public async Task<IReadOnlyList<OrderListItemDto>> GetAll(
             IEnumerable<OrderStatus>? statuses = null
@@ -63,6 +66,8 @@ namespace OrderApp.Main.Api.Application.Services
             unitOfWork.Orders.Add(order);
             await unitOfWork.SaveChanges();
 
+            await jobRequestService.FulfillOrder(order.Id);
+
             return (await GetDetailsById(order.Id)).Value;
         }
 
@@ -109,6 +114,9 @@ namespace OrderApp.Main.Api.Application.Services
             return OrderDetailsDto.FromEntity(order);
         }
 
+        public async Task<Result> FinishFulfill(int id) =>
+            await UpdateStatus(id, order => order.FinishFulfill());
+
         public async Task<Result> BeginShipping(int id) =>
             await UpdateStatus(id, order => order.BeginShipping());
 
@@ -118,7 +126,7 @@ namespace OrderApp.Main.Api.Application.Services
         public async Task<Result> Complete(int id) =>
             await UpdateStatus(id, order => order.Complete());
 
-        private async Task<Result> UpdateStatus(int id, Func<Order, Result> statusUpdateAction)
+        private async Task<Result> UpdateStatus(int id, Func<Order, Result> updateStatusFunc)
         {
             var result = await unitOfWork.Orders.GetById(id);
             if (result.IsFailed)
@@ -126,7 +134,7 @@ namespace OrderApp.Main.Api.Application.Services
                 return Result.Fail(result.Errors);
             }
 
-            statusUpdateAction(result.Value);
+            updateStatusFunc(result.Value);
             return await unitOfWork.SaveChanges();
         }
     }

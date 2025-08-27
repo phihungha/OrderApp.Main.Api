@@ -6,8 +6,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OrderApp.Main.Api.Application.Interfaces;
 using OrderApp.Main.Api.Application.Interfaces.ExternalServices;
+using OrderApp.Main.Api.Infrastructure.JobRequest;
+using OrderApp.Main.Api.Infrastructure.JobRequest.MessageDTOs;
 using OrderApp.Main.Api.Infrastructure.Persistence;
-using OrderApp.Main.Api.Infrastructure.Services.VisaPaymentService;
+using OrderApp.Main.Api.Infrastructure.VisaPayment;
 using Refit;
 
 namespace OrderApp.Main.Api.Infrastructure
@@ -19,8 +21,20 @@ namespace OrderApp.Main.Api.Infrastructure
             var services = builder.Services;
             var config = builder.Configuration;
 
+            SetupUnitOfWork(config, services);
+            SetupVisaPaymentService(config, services);
+            SetupSqsPublishers(config, services);
+
+            builder.Services.AddScoped<IJobRequestService, JobRequestService>();
+        }
+
+        private static void SetupUnitOfWork(
+            IConfiguration configuration,
+            IServiceCollection services
+        )
+        {
             var defaultConnectionString =
-                builder.Configuration.GetConnectionString("Default")
+                configuration.GetConnectionString("Default")
                 ?? throw new InvalidOperationException(
                     "ConnectionStrings:Default is not configured."
                 );
@@ -30,14 +44,20 @@ namespace OrderApp.Main.Api.Infrastructure
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+        }
 
-            var visaApiHostUrl = builder.Configuration.GetValue<string>("VisaApi:HostUrl");
+        private static void SetupVisaPaymentService(
+            IConfiguration configuration,
+            IServiceCollection services
+        )
+        {
+            var visaApiHostUrl = configuration.GetValue<string>("VisaApi:HostUrl");
             if (string.IsNullOrEmpty(visaApiHostUrl))
             {
                 throw new Exception("VisaApi:HostUrl configuration is missing or empty.");
             }
-            builder
-                .Services.AddRefitClient<IVisaApi>(
+            services
+                .AddRefitClient<IVisaApi>(
                     new RefitSettings
                     {
                         ContentSerializer = new NewtonsoftJsonContentSerializer(
@@ -50,7 +70,27 @@ namespace OrderApp.Main.Api.Infrastructure
                 )
                 .ConfigureHttpClient(c => c.BaseAddress = new Uri(visaApiHostUrl));
 
-            builder.Services.AddScoped<IVisaPaymentService, VisaPaymentService>();
+            services.AddScoped<IVisaPaymentService, VisaPaymentService>();
+        }
+
+        private static void SetupSqsPublishers(
+            IConfiguration configuration,
+            IServiceCollection services
+        )
+        {
+            var orderFulfillReqsSqsUrl =
+                configuration.GetValue<string>("AwsSqs:OrderFulfillRequests:Url")
+                ?? throw new InvalidOperationException(
+                    "AwsSqs:OrderFulfillRequests:Url is not configured."
+                );
+
+            services.AddAWSMessageBus(bus =>
+            {
+                bus.AddSQSPublisher<OrderFulfillRequestMessageDto>(
+                    orderFulfillReqsSqsUrl,
+                    OrderFulfillRequestMessageDto.MessageType
+                );
+            });
         }
     }
 }

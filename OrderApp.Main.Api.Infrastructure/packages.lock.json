@@ -1482,7 +1482,6 @@
       "orderapp.main.api.application": {
         "type": "Project",
         "dependencies": {
-          "AWS.Messaging": "[1.0.1, )",
           "FluentResults": "[4.0.0, )",
           "FluentValidation.DependencyInjectionExtensions": "[12.0.0, )",
           "FluentValidator": "[2.0.4, )",
