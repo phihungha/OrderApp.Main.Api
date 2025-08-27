@@ -19,11 +19,12 @@ namespace OrderApp.Main.Api.Infrastructure
         public static void AddInfrastructureServices(this IHostApplicationBuilder builder)
         {
             var services = builder.Services;
-            var config = builder.Configuration;
+            var configuration = builder.Configuration;
 
-            SetupUnitOfWork(config, services);
-            SetupVisaPaymentService(config, services);
-            SetupSqsPublishers(config, services);
+            SetupUnitOfWork(configuration, services);
+            SetupProductSearchService(configuration, services);
+            SetupVisaPaymentService(configuration, services);
+            SetupSqsPublishers(configuration, services);
 
             builder.Services.AddScoped<IJobRequestService, JobRequestService>();
         }
@@ -33,17 +34,34 @@ namespace OrderApp.Main.Api.Infrastructure
             IServiceCollection services
         )
         {
-            var defaultConnectionString =
+            var connectionString =
                 configuration.GetConnectionString("Default")
                 ?? throw new InvalidOperationException(
                     "ConnectionStrings:Default is not configured."
                 );
+
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseNpgsql(defaultConnectionString);
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+        }
+
+        private static void SetupProductSearchService(
+            IConfiguration configuration,
+            IServiceCollection services
+        )
+        {
+            var hostUrl =
+                configuration.GetValue<string>("OpenSearchClient:Url")
+                ?? throw new InvalidOperationException(
+                    "OpenSearchClient:Url configuration is missing or empty."
+                );
+            var connetionSettings = new ConnectionSettings(new Uri(hostUrl));
+
+            services.AddSingleton<IOpenSearchClient>(new OpenSearchClient(connetionSettings));
+            services.AddSingleton<IProductSearchService, ProductSearchService>();
         }
 
         private static void SetupVisaPaymentService(

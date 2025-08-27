@@ -4,7 +4,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
-      - ConnectionStrings__Default=Host=default-db;Database=default;Username=web-api;Password=web-api
+      - ConnectionStrings__Default=Host=default-db;Database=default;Username=web-api;Password=web-api;Include Error Detail=True
+      - OpenSearchClient__Url=http://search-engine:9200
       - VisaApi__HostUrl=http://visa-api-mock:5000
     ports:
       - 8080:8080
@@ -20,6 +21,7 @@ services:
       - DOTNET_ENVIRONMENT=Development
       - ConnectionStrings__Default=Host=default-db;Database=default;Username=web-api;Password=web-api
       - ConnectionStrings__Jobs=Host=jobs-db;Database=jobs;Username=web-api;Password=web-api
+      - OpenSearchClient__Url=http://search-engine:9200
       - VisaApi__HostUrl=http://visa-api-mock:5000
     volumes:
       - ~/.aws:/home/app/.aws:ro
