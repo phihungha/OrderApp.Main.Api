@@ -5,6 +5,7 @@ using OrderApp.Main.Api.Infrastructure;
 using OrderApp.Main.Api.WebApi.ResultEndpointProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("email-settings.json");
 
 builder
     .Services.AddControllers()
