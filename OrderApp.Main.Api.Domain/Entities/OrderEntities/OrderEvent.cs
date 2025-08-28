@@ -8,6 +8,6 @@
         public Order Order { get; set; } = null!;
 
         public OrderStatus Status { get; set; }
-        public DateTime Timestamp { get; set; }
+        public DateTime Time { get; set; }
     }
 }

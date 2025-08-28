@@ -7,6 +7,7 @@ using OrderApp.Main.Api.Jobs.SqsMessageHandlers;
 using OrderApp.Main.Api.WebApi.SqsMessageHandlers;
 
 var builder = Host.CreateApplicationBuilder(args);
+builder.Configuration.AddJsonFile("email-settings.json");
 
 var jobsConnectionString =
     builder.Configuration.GetConnectionString("Jobs")

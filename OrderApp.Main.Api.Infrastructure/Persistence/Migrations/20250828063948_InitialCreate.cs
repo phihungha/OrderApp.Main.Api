@@ -65,9 +65,10 @@ namespace OrderApp.Main.Api.Infrastructure.Persistence.Migrations
                         ),
                     OrderId = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
-                    Timestamp = table.Column<DateTime>(
+                    Time = table.Column<DateTime>(
                         type: "timestamp with time zone",
-                        nullable: false
+                        nullable: false,
+                        defaultValueSql: "now() at time zone 'utc'"
                     ),
                 },
                 constraints: table =>
