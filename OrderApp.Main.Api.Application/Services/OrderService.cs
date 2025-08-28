@@ -53,6 +53,14 @@ namespace OrderApp.Main.Api.Application.Services
                 }
 
                 var product = productsByIdDict[line.ProductId];
+
+                if (line.Quantity > product.StockItem.Quantity)
+                {
+                    return new BusinessError(
+                        $"Product with ID {line.ProductId} doesn't have enough stock."
+                    );
+                }
+
                 orderLines.Add(
                     new OrderLine
                     {

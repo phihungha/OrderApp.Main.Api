@@ -24,7 +24,11 @@ namespace OrderApp.Main.Api.Infrastructure.Persistence.Repositories
 
         public async Task<IReadOnlyList<Product>> GetManyByIdsAsync(IEnumerable<int> ids)
         {
-            return await Entities.AsNoTracking().Where(e => ids.Contains(e.Id)).ToListAsync();
+            return await Entities
+                .AsNoTracking()
+                .Include(e => e.StockItem)
+                .Where(e => ids.Contains(e.Id))
+                .ToListAsync();
         }
 
         public async Task<Result<Product>> GetDetailsbyId(int id)
