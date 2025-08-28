@@ -29,7 +29,7 @@ namespace OrderApp.Main.Api.Infrastructure
             SetupVisaApiClient(configuration, services);
             SetupMessagePublishers(configuration, services);
 
-            services.AddScoped<IOrderNotifyService, NotifyService>();
+            services.AddScoped<IOrderNotifyService, OrderNotifyService>();
             services.AddScoped<IJobRequestService, JobRequestService>();
             services.AddSingleton<IProductSearchService, ProductSearchService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -115,7 +115,7 @@ namespace OrderApp.Main.Api.Infrastructure
                     OrderFulfillRequestMessageDto.MessageType
                 );
 
-                bus.AddSQSPublisher<OrderEventMessageDto>(
+                bus.AddSNSPublisher<OrderEventMessageDto>(
                     OrderEventsSqsUrl,
                     OrderEventMessageDto.MessageType
                 );

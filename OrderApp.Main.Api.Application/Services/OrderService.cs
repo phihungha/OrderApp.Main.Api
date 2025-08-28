@@ -63,13 +63,13 @@ namespace OrderApp.Main.Api.Application.Services
                 );
             }
 
-            var order = new Order() { ShippingAddress = dto.ShippingAddress };
-            order.SetOrderLines(orderLines);
+            var order = Order.CreateNew(dto.ShippingAddress, orderLines);
 
             unitOfWork.Orders.Add(order);
             await unitOfWork.SaveChanges();
 
             await jobRequestService.FulfillOrder(order.Id);
+            await orderNotifyService.NotifyEvent(order.CurrentEvent);
 
             return (await GetDetailsById(order.Id)).Value;
         }
@@ -79,20 +79,20 @@ namespace OrderApp.Main.Api.Application.Services
             var result = await unitOfWork.Orders.GetDetailsById(id);
             if (result.IsFailed)
             {
-                return new NotFoundError();
+                return Result.Fail(result.Errors);
             }
 
             var order = result.Value;
 
             order.BeginFulfill();
-            var fulfillSaveChangesResult = await unitOfWork.SaveChanges();
-            if (result.IsFailed)
-            {
-                return Result.Fail(result.Errors);
-            }
+            await unitOfWork.SaveChanges();
+            await orderNotifyService.NotifyEvent(order.CurrentEvent);
 
             order.FinishFulfill();
-            return await unitOfWork.SaveChanges();
+            await unitOfWork.SaveChanges();
+            await orderNotifyService.NotifyEvent(order.CurrentEvent);
+
+            return Result.Ok();
         }
 
         public async Task<Result<OrderDetailsDto>> Update(int id, OrderUpdateDto dto)
@@ -121,6 +121,8 @@ namespace OrderApp.Main.Api.Application.Services
             }
 
             await unitOfWork.SaveChanges();
+            await orderNotifyService.NotifyEvent(order.CurrentEvent);
+
             return OrderDetailsDto.FromEntity(order);
         }
 
@@ -141,8 +143,14 @@ namespace OrderApp.Main.Api.Application.Services
                 return Result.Fail(result.Errors);
             }
 
-            updateStatusFunc(result.Value);
-            return await unitOfWork.SaveChanges();
+            var order = result.Value;
+
+            updateStatusFunc(order);
+            await unitOfWork.SaveChanges();
+
+            await orderNotifyService.NotifyEvent(order.CurrentEvent);
+
+            return Result.Ok();
         }
     }
 }

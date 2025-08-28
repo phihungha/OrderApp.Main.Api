@@ -4,6 +4,6 @@ namespace OrderApp.Main.Api.Application.Interfaces.ExternalServices
 {
     public interface IOrderNotifyService
     {
-        Task NotifyStatusUpdate(int orderId, OrderStatus status, DateTime time);
+        Task NotifyEvent(OrderEvent orderEvent);
     }
 }

@@ -5,19 +5,20 @@ using OrderApp.Main.Api.Infrastructure.Notify.MessageDTOs;
 
 namespace OrderApp.Main.Api.Infrastructure.Notify
 {
-    public class NotifyService(ISNSPublisher snsPublisher) : IOrderNotifyService
+    public class OrderNotifyService(ISNSPublisher snsPublisher) : IOrderNotifyService
     {
         private readonly ISNSPublisher snsPublisher = snsPublisher;
 
-        public async Task NotifyStatusUpdate(int orderId, OrderStatus status, DateTime time)
+        public async Task NotifyEvent(OrderEvent orderEvent)
         {
             await snsPublisher.PublishAsync(
                 new OrderEventMessageDto
                 {
-                    OrderId = orderId,
-                    Status = status,
-                    Time = time,
-                }
+                    OrderId = orderEvent.OrderId,
+                    Status = orderEvent.Status,
+                    Time = orderEvent.Time,
+                },
+                new SNSOptions { MessageGroupId = orderEvent.Id.ToString() }
             );
         }
     }
