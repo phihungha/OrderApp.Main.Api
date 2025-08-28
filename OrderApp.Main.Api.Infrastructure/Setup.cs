@@ -9,6 +9,8 @@ using OrderApp.Main.Api.Application.Interfaces;
 using OrderApp.Main.Api.Application.Interfaces.ExternalServices;
 using OrderApp.Main.Api.Infrastructure.JobRequest;
 using OrderApp.Main.Api.Infrastructure.JobRequest.MessageDTOs;
+using OrderApp.Main.Api.Infrastructure.Notify;
+using OrderApp.Main.Api.Infrastructure.Notify.MessageDTOs;
 using OrderApp.Main.Api.Infrastructure.Persistence;
 using OrderApp.Main.Api.Infrastructure.VisaPayment;
 using Refit;
@@ -22,15 +24,19 @@ namespace OrderApp.Main.Api.Infrastructure
             var services = builder.Services;
             var configuration = builder.Configuration;
 
-            SetupUnitOfWork(configuration, services);
-            SetupProductSearchService(configuration, services);
-            SetupVisaPaymentService(configuration, services);
-            SetupSqsPublishers(configuration, services);
+            SetupDbContext(configuration, services);
+            SetupOpenSearch(configuration, services);
+            SetupVisaApiClient(configuration, services);
+            SetupMessagePublishers(configuration, services);
 
-            builder.Services.AddScoped<IJobRequestService, JobRequestService>();
+            services.AddScoped<IOrderNotifyService, NotifyService>();
+            services.AddScoped<IJobRequestService, JobRequestService>();
+            services.AddSingleton<IProductSearchService, ProductSearchService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IVisaPaymentService, VisaPaymentService>();
         }
 
-        private static void SetupUnitOfWork(
+        private static void SetupDbContext(
             IConfiguration configuration,
             IServiceCollection services
         )
@@ -45,11 +51,9 @@ namespace OrderApp.Main.Api.Infrastructure
             {
                 options.UseNpgsql(connectionString);
             });
-
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
-        private static void SetupProductSearchService(
+        private static void SetupOpenSearch(
             IConfiguration configuration,
             IServiceCollection services
         )
@@ -62,10 +66,9 @@ namespace OrderApp.Main.Api.Infrastructure
             var connetionSettings = new ConnectionSettings(new Uri(hostUrl));
 
             services.AddSingleton<IOpenSearchClient>(new OpenSearchClient(connetionSettings));
-            services.AddSingleton<IProductSearchService, ProductSearchService>();
         }
 
-        private static void SetupVisaPaymentService(
+        private static void SetupVisaApiClient(
             IConfiguration configuration,
             IServiceCollection services
         )
@@ -88,26 +91,33 @@ namespace OrderApp.Main.Api.Infrastructure
                     }
                 )
                 .ConfigureHttpClient(c => c.BaseAddress = new Uri(hostUrl));
-
-            services.AddScoped<IVisaPaymentService, VisaPaymentService>();
         }
 
-        private static void SetupSqsPublishers(
+        private static void SetupMessagePublishers(
             IConfiguration configuration,
             IServiceCollection services
         )
         {
-            var orderFulfillReqsSqsUrl =
+            var orderFulfillRequestsSqsUrl =
                 configuration.GetValue<string>("AwsSqs:OrderFulfillRequests:Url")
                 ?? throw new InvalidOperationException(
                     "AwsSqs:OrderFulfillRequests:Url is not configured."
                 );
 
+            var OrderEventsSqsUrl =
+                configuration.GetValue<string>("AwsSns:OrderEvents:Url")
+                ?? throw new InvalidOperationException("AwsSns:OrderEvents:Url is not configured.");
+
             services.AddAWSMessageBus(bus =>
             {
                 bus.AddSQSPublisher<OrderFulfillRequestMessageDto>(
-                    orderFulfillReqsSqsUrl,
+                    orderFulfillRequestsSqsUrl,
                     OrderFulfillRequestMessageDto.MessageType
+                );
+
+                bus.AddSQSPublisher<OrderEventMessageDto>(
+                    OrderEventsSqsUrl,
+                    OrderEventMessageDto.MessageType
                 );
             });
         }

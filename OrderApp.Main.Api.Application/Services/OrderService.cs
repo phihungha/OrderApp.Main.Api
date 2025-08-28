@@ -8,11 +8,15 @@ using OrderApp.Main.Api.Domain.Errors;
 
 namespace OrderApp.Main.Api.Application.Services
 {
-    public class OrderService(IUnitOfWork unitOfWork, IJobRequestService jobRequestService)
-        : IOrderService
+    public class OrderService(
+        IUnitOfWork unitOfWork,
+        IJobRequestService jobRequestService,
+        IOrderNotifyService orderNotifyService
+    ) : IOrderService
     {
         private readonly IUnitOfWork unitOfWork = unitOfWork;
         private readonly IJobRequestService jobRequestService = jobRequestService;
+        private readonly IOrderNotifyService orderNotifyService = orderNotifyService;
 
         public async Task<IReadOnlyList<OrderListItemDto>> GetAll(
             IEnumerable<OrderStatus>? statuses = null
@@ -61,7 +65,6 @@ namespace OrderApp.Main.Api.Application.Services
 
             var order = new Order() { ShippingAddress = dto.ShippingAddress };
             order.SetOrderLines(orderLines);
-            order.CreateFirstEvent();
 
             unitOfWork.Orders.Add(order);
             await unitOfWork.SaveChanges();
