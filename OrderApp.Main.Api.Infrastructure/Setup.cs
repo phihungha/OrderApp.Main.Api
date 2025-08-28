@@ -1,7 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentEmail.Core;
+using FluentEmail.Liquid;
+using FluentEmail.MailKitSmtp;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OpenSearch.Client;
@@ -22,18 +27,48 @@ namespace OrderApp.Main.Api.Infrastructure
         public static void AddInfrastructureServices(this IHostApplicationBuilder builder)
         {
             var services = builder.Services;
-            var configuration = builder.Configuration;
+            var config = builder.Configuration;
 
-            SetupDbContext(configuration, services);
-            SetupOpenSearch(configuration, services);
-            SetupVisaApiClient(configuration, services);
-            SetupMessagePublishers(configuration, services);
+            SetupDbContext(config, services);
+            SetupFluentEmail(config, services);
+            SetupMessagePublishers(config, services);
+            SetupOpenSearch(config, services);
+            SetupVisaApiClient(config, services);
 
-            services.AddScoped<IOrderNotifyService, OrderNotifyService>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IJobRequestService, JobRequestService>();
+            services.AddScoped<IOrderNotifyService, OrderNotifyService>();
             services.AddSingleton<IProductSearchService, ProductSearchService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IVisaPaymentService, VisaPaymentService>();
+        }
+
+        private static void SetupFluentEmail(IConfiguration config, IServiceCollection services)
+        {
+            var emailConfig =
+                config.GetSection(EmailConfig.Email).Get<EmailConfig>()
+                ?? throw new InvalidOperationException("Email not configured");
+
+            var fileProvider = new PhysicalFileProvider(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EmailTemplates")
+            );
+
+            services
+                .AddFluentEmail(emailConfig.FromEmail, emailConfig.FromName)
+                .AddLiquidRenderer(c =>
+                {
+                    c.FileProvider = fileProvider;
+                })
+                .AddMailKitSender(
+                    new SmtpClientOptions
+                    {
+                        Server = emailConfig.SmtpServerUrl,
+                        Port = emailConfig.SmtpServerPort,
+                        RequiresAuthentication = true,
+                        User = emailConfig.FromEmail,
+                        Password = emailConfig.AppPassword,
+                    }
+                );
         }
 
         private static void SetupDbContext(
@@ -50,6 +85,35 @@ namespace OrderApp.Main.Api.Infrastructure
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseNpgsql(connectionString);
+            });
+        }
+
+        private static void SetupMessagePublishers(
+            IConfiguration configuration,
+            IServiceCollection services
+        )
+        {
+            var orderFulfillRequestsSqsUrl =
+                configuration.GetValue<string>("AwsSqs:OrderFulfillRequests:Url")
+                ?? throw new InvalidOperationException(
+                    "AwsSqs:OrderFulfillRequests:Url is not configured."
+                );
+
+            var OrderEventsSqsUrl =
+                configuration.GetValue<string>("AwsSns:OrderEvents:Url")
+                ?? throw new InvalidOperationException("AwsSns:OrderEvents:Url is not configured.");
+
+            services.AddAWSMessageBus(bus =>
+            {
+                bus.AddSQSPublisher<OrderFulfillRequestMessageDto>(
+                    orderFulfillRequestsSqsUrl,
+                    OrderFulfillRequestMessageDto.MessageType
+                );
+
+                bus.AddSNSPublisher<OrderEventMessageDto>(
+                    OrderEventsSqsUrl,
+                    OrderEventMessageDto.MessageType
+                );
             });
         }
 
@@ -91,35 +155,6 @@ namespace OrderApp.Main.Api.Infrastructure
                     }
                 )
                 .ConfigureHttpClient(c => c.BaseAddress = new Uri(hostUrl));
-        }
-
-        private static void SetupMessagePublishers(
-            IConfiguration configuration,
-            IServiceCollection services
-        )
-        {
-            var orderFulfillRequestsSqsUrl =
-                configuration.GetValue<string>("AwsSqs:OrderFulfillRequests:Url")
-                ?? throw new InvalidOperationException(
-                    "AwsSqs:OrderFulfillRequests:Url is not configured."
-                );
-
-            var OrderEventsSqsUrl =
-                configuration.GetValue<string>("AwsSns:OrderEvents:Url")
-                ?? throw new InvalidOperationException("AwsSns:OrderEvents:Url is not configured.");
-
-            services.AddAWSMessageBus(bus =>
-            {
-                bus.AddSQSPublisher<OrderFulfillRequestMessageDto>(
-                    orderFulfillRequestsSqsUrl,
-                    OrderFulfillRequestMessageDto.MessageType
-                );
-
-                bus.AddSNSPublisher<OrderEventMessageDto>(
-                    OrderEventsSqsUrl,
-                    OrderEventMessageDto.MessageType
-                );
-            });
         }
     }
 }

@@ -1,0 +1,72 @@
+﻿{% assign formatted_time = Time | date: "%B %d, %Y at %I:%M %p" %}
+
+{% case Status %}
+  {% when "WaitingForShipping" %}
+    {% assign status_name = "Waiting for shipping" %}
+    {% assign status_message = "Your order has been processed and is waiting for shipping. We'll notify you once it's on the way!" %}
+  {% when "Shipping" %}
+    {% assign status_name = "Shipping" %}
+    {% assign status_message = "Good news! Your order is on its way. You can expect delivery soon." %}
+  {% when "Shipped" %}
+    {% assign status_name = "Shipped" %}
+    {% assign status_message = "Your order has arrived at your shipping address!" %}
+  {% when "Completed" %}
+    {% assign status_name = "Completed" %}
+    {% assign status_message = "Your order has completed. We hope you enjoy your purchase!" %}
+  {% when "Canceled" %}
+    {% assign status_name = "Canceled" %}
+    {% assign status_message = "Your order has been canceled. If this was unexpected, please contact our support team for assistance." %}
+{% endcase %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Update on Order #{{ OrderId }}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      padding: 20px;
+    }
+    .email-container {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .header {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .details {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <div class="header">Update on Order #{{ OrderId }}</div>
+    <div class="details">
+      <p>Dear Customer,</p>
+      <p>{{ status_message }}</p>
+      <p><strong>Status:</strong> {{ status_name }}</p>
+      <p><strong>Time:</strong> {{ formatted_time }}</p>
+      <p>If you have any questions, feel free to contact our support team.</p>
+    </div>
+    <div class="footer">
+      Thank you for shopping with us!
+    </div>
+  </div>
+</body>
+</html>
