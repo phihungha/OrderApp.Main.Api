@@ -14,7 +14,7 @@ namespace OrderApp.Main.Api.Application.DTOs.OrderDTOs
             {
                 Id = orderEvent.Id,
                 Status = orderEvent.Status,
-                Timestamp = orderEvent.Timestamp,
+                Timestamp = orderEvent.Time,
             };
         }
     }

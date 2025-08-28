@@ -4,11 +4,11 @@ using OrderApp.Main.Api.Domain.Entities.OrderEntities;
 
 namespace OrderApp.Main.Api.Infrastructure.Persistence.EntityConfigs
 {
-    internal class OrderEntityConfig : IEntityTypeConfiguration<Order>
+    internal class OrderEventEntityConfig : IEntityTypeConfiguration<OrderEvent>
     {
-        public void Configure(EntityTypeBuilder<Order> builder)
+        public void Configure(EntityTypeBuilder<OrderEvent> builder)
         {
-            builder.HasMany(o => o.Products).WithMany(p => p.Orders).UsingEntity<OrderLine>();
+            builder.Property(e => e.Time).HasDefaultValueSql("now() at time zone 'utc'");
         }
     }
 }

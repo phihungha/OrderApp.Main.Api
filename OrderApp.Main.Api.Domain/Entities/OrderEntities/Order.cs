@@ -11,6 +11,7 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
         public OrderStatus Status { get; private set; } = OrderStatus.Pending;
         public bool IsFinished => Status == OrderStatus.Completed || Status == OrderStatus.Canceled;
         public IList<OrderEvent> Events { get; private set; } = [];
+        public OrderEvent CurrentEvent => Events.Last();
 
         public required string ShippingAddress { get; set; }
 
@@ -23,22 +24,19 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
             set => _ = value;
         }
 
-        public void CreateFirstEvent()
+        public static Order CreateNew(string shippingAddress, IEnumerable<OrderLine> orderLines)
         {
-            var eventEntity = new OrderEvent
-            {
-                OrderId = Id,
-                Status = OrderStatus.Pending,
-                Timestamp = DateTime.UtcNow,
-            };
-            Events.Add(eventEntity);
+            var order = new Order { ShippingAddress = shippingAddress };
+            order.SetOrderLines(orderLines);
+            order.RecordEvent();
+            return order;
         }
 
-        public void SetOrderLines(IEnumerable<OrderLine> lines)
+        public Result SetOrderLines(IEnumerable<OrderLine> lines)
         {
             if (Status != OrderStatus.Pending)
             {
-                throw new InvalidOperationException(
+                return new BusinessError(
                     "Cannot set order lines of an order not in Pending state."
                 );
             }
@@ -48,6 +46,8 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
             {
                 Lines.Add(line);
             }
+
+            return Result.Ok();
         }
 
         public Result BeginFulfill()
@@ -72,7 +72,7 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
             }
 
             Status = OrderStatus.Fulfilling;
-            CreateEvent();
+            RecordEvent();
 
             return Result.Ok();
         }
@@ -87,7 +87,7 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
             }
 
             Status = OrderStatus.WaitingForShipping;
-            CreateEvent();
+            RecordEvent();
 
             return Result.Ok();
         }
@@ -102,7 +102,7 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
             }
 
             Status = OrderStatus.Shipping;
-            CreateEvent();
+            RecordEvent();
 
             return Result.Ok();
         }
@@ -117,7 +117,7 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
             }
 
             Status = OrderStatus.Shipped;
-            CreateEvent();
+            RecordEvent();
 
             return Result.Ok();
         }
@@ -130,7 +130,7 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
             }
 
             Status = OrderStatus.Completed;
-            CreateEvent();
+            RecordEvent();
 
             return Result.Ok();
         }
@@ -145,19 +145,14 @@ namespace OrderApp.Main.Api.Domain.Entities.OrderEntities
             }
 
             Status = OrderStatus.Canceled;
-            CreateEvent();
+            RecordEvent();
 
             return Result.Ok();
         }
 
-        private void CreateEvent()
+        private void RecordEvent()
         {
-            var eventEntity = new OrderEvent
-            {
-                OrderId = Id,
-                Status = Status,
-                Timestamp = DateTime.UtcNow,
-            };
+            var eventEntity = new OrderEvent { OrderId = Id, Status = Status };
             Events.Add(eventEntity);
         }
     }
