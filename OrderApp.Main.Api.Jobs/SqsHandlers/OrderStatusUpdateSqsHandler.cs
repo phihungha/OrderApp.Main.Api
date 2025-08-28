@@ -2,7 +2,7 @@
 using FluentResults;
 using OrderApp.Main.Api.Application.Interfaces.ApplicationServices;
 
-namespace OrderApp.Main.Api.WebApi.SqsMessageHandlers
+namespace OrderApp.Main.Api.Jobs.SqsHandlers
 {
     public record OrderStatusUpdateMessageDto
     {

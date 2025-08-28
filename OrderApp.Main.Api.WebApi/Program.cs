@@ -1,11 +1,15 @@
+using System.Configuration;
 using System.Text.Json.Serialization;
 using FluentResults.Extensions.AspNetCore;
 using OrderApp.Main.Api.Application;
 using OrderApp.Main.Api.Infrastructure;
+using OrderApp.Main.Api.Jobs;
 using OrderApp.Main.Api.WebApi.ResultEndpointProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Configuration.AddJsonFile("email-settings.json");
+builder.Services.Configure<AppConfig>(builder.Configuration);
 
 builder
     .Services.AddControllers()

@@ -1,12 +1,10 @@
-﻿using FluentEmail.Core;
-using FluentEmail.Liquid;
+﻿using System.Configuration;
 using FluentEmail.MailKitSmtp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OpenSearch.Client;
@@ -27,13 +25,15 @@ namespace OrderApp.Main.Api.Infrastructure
         public static void AddInfrastructureServices(this IHostApplicationBuilder builder)
         {
             var services = builder.Services;
-            var config = builder.Configuration;
+            var infraConfig =
+                builder.Configuration.Get<InfrastructureConfig>()
+                ?? throw new ConfigurationErrorsException("App config is null.");
 
-            SetupDbContext(config, services);
-            SetupFluentEmail(config, services);
-            SetupMessagePublishers(config, services);
-            SetupOpenSearch(config, services);
-            SetupVisaApiClient(config, services);
+            SetupDefaultDb(builder.Configuration, services);
+            SetupFluentEmail(infraConfig, services);
+            SetupMessagePublishers(infraConfig, services);
+            SetupOpenSearch(infraConfig, services);
+            SetupVisaApiClient(infraConfig, services);
 
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IJobRequestService, JobRequestService>();
@@ -43,18 +43,19 @@ namespace OrderApp.Main.Api.Infrastructure
             services.AddScoped<IVisaPaymentService, VisaPaymentService>();
         }
 
-        private static void SetupFluentEmail(IConfiguration config, IServiceCollection services)
+        private static void SetupFluentEmail(
+            InfrastructureConfig infraConfig,
+            IServiceCollection services
+        )
         {
-            var emailConfig =
-                config.GetSection(EmailConfig.Email).Get<EmailConfig>()
-                ?? throw new InvalidOperationException("Email not configured");
-
             var fileProvider = new PhysicalFileProvider(
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EmailTemplates")
             );
 
+            var config = infraConfig.Email;
+
             services
-                .AddFluentEmail(emailConfig.FromEmail, emailConfig.FromName)
+                .AddFluentEmail(config.FromEmail, config.FromName)
                 .AddLiquidRenderer(c =>
                 {
                     c.FileProvider = fileProvider;
@@ -62,25 +63,20 @@ namespace OrderApp.Main.Api.Infrastructure
                 .AddMailKitSender(
                     new SmtpClientOptions
                     {
-                        Server = emailConfig.SmtpServerUrl,
-                        Port = emailConfig.SmtpServerPort,
+                        Server = config.SmtpServerUrl,
+                        Port = config.SmtpServerPort,
                         RequiresAuthentication = true,
-                        User = emailConfig.FromEmail,
-                        Password = emailConfig.AppPassword,
+                        User = config.FromEmail,
+                        Password = config.AppPassword,
                     }
                 );
         }
 
-        private static void SetupDbContext(
-            IConfiguration configuration,
-            IServiceCollection services
-        )
+        private static void SetupDefaultDb(IConfiguration allConfig, IServiceCollection services)
         {
             var connectionString =
-                configuration.GetConnectionString("Default")
-                ?? throw new InvalidOperationException(
-                    "ConnectionStrings:Default is not configured."
-                );
+                allConfig.GetConnectionString("Default")
+                ?? throw new ConfigurationErrorsException("ConnectionStrings:Default is not set");
 
             services.AddDbContext<AppDbContext>(options =>
             {
@@ -89,59 +85,44 @@ namespace OrderApp.Main.Api.Infrastructure
         }
 
         private static void SetupMessagePublishers(
-            IConfiguration configuration,
+            InfrastructureConfig infraConfig,
             IServiceCollection services
         )
         {
-            var orderFulfillRequestsSqsUrl =
-                configuration.GetValue<string>("AwsSqs:OrderFulfillRequests:Url")
-                ?? throw new InvalidOperationException(
-                    "AwsSqs:OrderFulfillRequests:Url is not configured."
-                );
-
-            var OrderEventsSqsUrl =
-                configuration.GetValue<string>("AwsSns:OrderEvents:Url")
-                ?? throw new InvalidOperationException("AwsSns:OrderEvents:Url is not configured.");
+            var snsConfig = infraConfig.AwsSns;
+            var sqsConfig = infraConfig.AwsSqs;
 
             services.AddAWSMessageBus(bus =>
             {
-                bus.AddSQSPublisher<OrderFulfillRequestMessageDto>(
-                    orderFulfillRequestsSqsUrl,
-                    OrderFulfillRequestMessageDto.MessageType
+                bus.AddSQSPublisher<OrderFulfillReqMessageDto>(
+                    sqsConfig.OrderFulfillRequests.QueueUrl,
+                    OrderFulfillReqMessageDto.MessageType
                 );
 
                 bus.AddSNSPublisher<OrderEventMessageDto>(
-                    OrderEventsSqsUrl,
+                    snsConfig.OrderEvents.TopicUrl,
                     OrderEventMessageDto.MessageType
                 );
             });
         }
 
         private static void SetupOpenSearch(
-            IConfiguration configuration,
+            InfrastructureConfig infraConfig,
             IServiceCollection services
         )
         {
-            var hostUrl =
-                configuration.GetValue<string>("OpenSearchApiClient:Url")
-                ?? throw new InvalidOperationException(
-                    "OpenSearchClient:Url configuration is missing or empty."
-                );
-            var connetionSettings = new ConnectionSettings(new Uri(hostUrl));
-
+            var config = infraConfig.OpenSearchApiClient;
+            var connetionSettings = new ConnectionSettings(new Uri(config.Url));
             services.AddSingleton<IOpenSearchClient>(new OpenSearchClient(connetionSettings));
         }
 
         private static void SetupVisaApiClient(
-            IConfiguration configuration,
+            InfrastructureConfig infraConfig,
             IServiceCollection services
         )
         {
-            var hostUrl = configuration.GetValue<string>("VisaApiClient:Url");
-            if (string.IsNullOrEmpty(hostUrl))
-            {
-                throw new Exception("VisaPaymentClient:Url configuration is missing or empty.");
-            }
+            var config = infraConfig.VisaApiClient;
+
             services
                 .AddRefitClient<IVisaApi>(
                     new RefitSettings
@@ -154,7 +135,7 @@ namespace OrderApp.Main.Api.Infrastructure
                         ),
                     }
                 )
-                .ConfigureHttpClient(c => c.BaseAddress = new Uri(hostUrl));
+                .ConfigureHttpClient(c => c.BaseAddress = new Uri(config.Url));
         }
     }
 }

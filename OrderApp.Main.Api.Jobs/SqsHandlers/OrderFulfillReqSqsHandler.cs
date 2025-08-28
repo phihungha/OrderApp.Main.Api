@@ -3,15 +3,15 @@ using Hangfire;
 using OrderApp.Main.Api.Application.Interfaces.ApplicationServices;
 using OrderApp.Main.Api.Infrastructure.JobRequest.MessageDTOs;
 
-namespace OrderApp.Main.Api.Jobs.SqsMessageHandlers
+namespace OrderApp.Main.Api.Jobs.SqsHandlers
 {
-    public class OrderFulfillRequestSqsHandler(IBackgroundJobClient backgroundJobClient)
-        : IMessageHandler<OrderFulfillRequestMessageDto>
+    public class OrderFulfillReqSqsHandler(IBackgroundJobClient backgroundJobClient)
+        : IMessageHandler<OrderFulfillReqMessageDto>
     {
         private readonly IBackgroundJobClient backgroundJobClient = backgroundJobClient;
 
         public Task<MessageProcessStatus> HandleAsync(
-            MessageEnvelope<OrderFulfillRequestMessageDto> messageEnvelope,
+            MessageEnvelope<OrderFulfillReqMessageDto> messageEnvelope,
             CancellationToken token = default
         )
         {

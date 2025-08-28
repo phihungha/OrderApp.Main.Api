@@ -1,65 +1,28 @@
+using System.Configuration;
 using Hangfire;
 using Hangfire.PostgreSql;
 using OrderApp.Main.Api.Application;
 using OrderApp.Main.Api.Infrastructure;
-using OrderApp.Main.Api.Infrastructure.JobRequest.MessageDTOs;
-using OrderApp.Main.Api.Jobs.SqsMessageHandlers;
-using OrderApp.Main.Api.WebApi.SqsMessageHandlers;
+using OrderApp.Main.Api.Jobs;
+using OrderApp.Main.Api.Jobs.SqsHandlers;
 
 var builder = Host.CreateApplicationBuilder(args);
-builder.Configuration.AddJsonFile("email-settings.json");
 
-var jobsConnectionString =
+builder.Configuration.AddJsonFile("email-settings.json");
+builder.Services.Configure<AppConfig>(builder.Configuration);
+
+var connectionString =
     builder.Configuration.GetConnectionString("Jobs")
-    ?? throw new InvalidOperationException("ConnectionStrings:Jobs is not configured.");
+    ?? throw new ConfigurationErrorsException("ConnectionStrings:Jobs is not set");
+
 builder.Services.AddHangfire(provider =>
-    provider.UsePostgreSqlStorage(c => c.UseNpgsqlConnection(jobsConnectionString))
+    provider.UsePostgreSqlStorage(c => c.UseNpgsqlConnection(connectionString))
 );
 builder.Services.AddHangfireServer();
 
 builder.AddInfrastructureServices();
 builder.AddApplicationServices();
-
-var orderUpdatesSqsUrl =
-    builder.Configuration.GetValue<string>("AwsSqs:OrderUpdates:Url")
-    ?? throw new InvalidOperationException("AwsSqs:OrderUpdates:Url is not configured.");
-var orderFulfillReqsSqsUrl =
-    builder.Configuration.GetValue<string>("AwsSqs:OrderFulfillRequests:Url")
-    ?? throw new InvalidOperationException("AwsSqs:OrderFulfillRequests:Url is not configured.");
-
-builder.Services.AddAWSMessageBus(busBuilder =>
-{
-    busBuilder.AddSQSPublisher<OrderFulfillRequestMessageDto>(
-        orderFulfillReqsSqsUrl,
-        OrderFulfillRequestMessageDto.MessageType
-    );
-
-    busBuilder.AddSQSPoller(
-        orderFulfillReqsSqsUrl,
-        options =>
-        {
-            options.MaxNumberOfConcurrentMessages = 10;
-            options.WaitTimeSeconds = 20;
-        }
-    );
-
-    busBuilder.AddMessageHandler<OrderFulfillRequestSqsHandler, OrderFulfillRequestMessageDto>(
-        OrderFulfillRequestMessageDto.MessageType
-    );
-
-    busBuilder.AddSQSPoller(
-        orderUpdatesSqsUrl,
-        options =>
-        {
-            options.MaxNumberOfConcurrentMessages = 10;
-            options.WaitTimeSeconds = 20;
-        }
-    );
-
-    busBuilder.AddMessageHandler<OrderStatusUpdateSqsHandler, OrderStatusUpdateMessageDto>(
-        OrderStatusUpdateMessageDto.MessageType
-    );
-});
+builder.AddSqsHandlers();
 
 var app = builder.Build();
 

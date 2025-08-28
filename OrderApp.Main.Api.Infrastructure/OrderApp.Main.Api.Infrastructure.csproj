@@ -30,6 +30,7 @@
     <PackageReference Include="Refit" Version="8.0.0" />
     <PackageReference Include="Refit.HttpClientFactory" Version="8.0.0" />
     <PackageReference Include="Refit.Newtonsoft.Json" Version="8.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.8" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrderApp.Main.Api.Application\OrderApp.Main.Api.Application.csproj" />

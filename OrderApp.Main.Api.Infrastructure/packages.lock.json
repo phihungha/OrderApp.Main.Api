@@ -196,6 +196,16 @@
           "Refit": "8.0.0"
         }
       },
+      "System.Configuration.ConfigurationManager": {
+        "type": "Direct",
+        "requested": "[9.0.8, )",
+        "resolved": "9.0.8",
+        "contentHash": "BR70HYY5jeOa/jBrd/wyydpuqhFyla2ybQRL/UPBIiSvctVqi18iQoM44Gx41jy7t6wuAdKuTnie6io4j8aq3w==",
+        "dependencies": {
+          "System.Diagnostics.EventLog": "9.0.8",
+          "System.Security.Cryptography.ProtectedData": "9.0.8"
+        }
+      },
       "AWSSDK.Core": {
         "type": "Transitive",
         "resolved": "4.0.0.23",
@@ -895,6 +905,11 @@
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         }
       },
+      "System.Diagnostics.EventLog": {
+        "type": "Transitive",
+        "resolved": "9.0.8",
+        "contentHash": "gebRF3JLLJ76jz1CQpvwezNapZUjFq20JQsaGHzBH0DzlkHBLpdhwkOei9usiOkIGMwU/L0ALWpNe1JE+5/itw=="
+      },
       "System.Diagnostics.Tools": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -1401,6 +1416,11 @@
           "System.Threading": "4.3.0",
           "System.Threading.Tasks": "4.3.0"
         }
+      },
+      "System.Security.Cryptography.ProtectedData": {
+        "type": "Transitive",
+        "resolved": "9.0.8",
+        "contentHash": "w7+KCnqmtDboV8dxTLxlUltasP7AgzNFdTLq1D/ey50ykgXW+CJBIQkzYZjgPzmjKB+/PGGUKYrH7TSbwrDtRw=="
       },
       "System.Security.Cryptography.X509Certificates": {
         "type": "Transitive",

@@ -10,7 +10,7 @@ namespace OrderApp.Main.Api.Infrastructure.JobRequest
 
         public async Task FulfillOrder(int orderId)
         {
-            var messageBody = new OrderFulfillRequestMessageDto() { OrderId = orderId };
+            var messageBody = new OrderFulfillReqMessageDto() { OrderId = orderId };
             await sqsPublisher.SendAsync(messageBody);
         }
     }

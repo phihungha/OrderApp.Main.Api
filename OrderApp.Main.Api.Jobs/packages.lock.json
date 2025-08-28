@@ -881,6 +881,15 @@
           "System.Threading.Tasks": "4.3.0"
         }
       },
+      "System.Configuration.ConfigurationManager": {
+        "type": "Transitive",
+        "resolved": "9.0.8",
+        "contentHash": "BR70HYY5jeOa/jBrd/wyydpuqhFyla2ybQRL/UPBIiSvctVqi18iQoM44Gx41jy7t6wuAdKuTnie6io4j8aq3w==",
+        "dependencies": {
+          "System.Diagnostics.EventLog": "9.0.8",
+          "System.Security.Cryptography.ProtectedData": "9.0.8"
+        }
+      },
       "System.Console": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -1410,6 +1419,11 @@
           "System.Threading.Tasks": "4.3.0"
         }
       },
+      "System.Security.Cryptography.ProtectedData": {
+        "type": "Transitive",
+        "resolved": "9.0.8",
+        "contentHash": "w7+KCnqmtDboV8dxTLxlUltasP7AgzNFdTLq1D/ey50ykgXW+CJBIQkzYZjgPzmjKB+/PGGUKYrH7TSbwrDtRw=="
+      },
       "System.Security.Cryptography.X509Certificates": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -1596,7 +1610,8 @@
           "OrderApp.Main.Api.Domain": "[1.0.0, )",
           "Refit": "[8.0.0, )",
           "Refit.HttpClientFactory": "[8.0.0, )",
-          "Refit.Newtonsoft.Json": "[8.0.0, )"
+          "Refit.Newtonsoft.Json": "[8.0.0, )",
+          "System.Configuration.ConfigurationManager": "[9.0.8, )"
         }
       }
     }

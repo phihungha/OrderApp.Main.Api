@@ -1,6 +1,6 @@
 ﻿namespace OrderApp.Main.Api.Infrastructure.JobRequest.MessageDTOs
 {
-    public record OrderFulfillRequestMessageDto
+    public record OrderFulfillReqMessageDto
     {
         public const string MessageType = "Order.FulfillRequest";
 
