@@ -1,10 +1,10 @@
 ﻿using AWS.Messaging.Publishers.SQS;
 using OrderApp.Main.Api.Application.Interfaces.ExternalServices;
-using OrderApp.Main.Api.Infrastructure.JobRequest.MessageDTOs;
+using OrderApp.Main.Api.Infrastructure.JobStart.MessageDTOs;
 
-namespace OrderApp.Main.Api.Infrastructure.JobRequest
+namespace OrderApp.Main.Api.Infrastructure.JobStart
 {
-    public class JobRequestService(ISQSPublisher sqsPublisher) : IJobRequestService
+    public class JobStartService(ISQSPublisher sqsPublisher) : IJobStartService
     {
         private readonly ISQSPublisher sqsPublisher = sqsPublisher;
 

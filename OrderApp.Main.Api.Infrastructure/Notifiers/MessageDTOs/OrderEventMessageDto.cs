@@ -1,6 +1,6 @@
 ﻿using OrderApp.Main.Api.Domain.Entities.OrderEntities;
 
-namespace OrderApp.Main.Api.Infrastructure.Notify.MessageDTOs
+namespace OrderApp.Main.Api.Infrastructure.Notifiers.MessageDTOs
 {
     public class OrderEventMessageDto
     {

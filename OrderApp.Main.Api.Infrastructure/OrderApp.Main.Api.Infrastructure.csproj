@@ -37,7 +37,7 @@
     <ProjectReference Include="..\OrderApp.Main.Api.Domain\OrderApp.Main.Api.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ContentWithTargetPath Include="Notify\EmailTemplates\**\*">
+    <ContentWithTargetPath Include="Notifiers\EmailTemplates\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>EmailTemplates\%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>

@@ -1,5 +1,5 @@
 ﻿using System.Configuration;
-using OrderApp.Main.Api.Infrastructure.JobRequest.MessageDTOs;
+using OrderApp.Main.Api.Infrastructure.JobStart.MessageDTOs;
 
 namespace OrderApp.Main.Api.Jobs.SqsHandlers
 {

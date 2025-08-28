@@ -1,6 +1,6 @@
 ﻿namespace OrderApp.Main.Api.Application.Interfaces.ExternalServices
 {
-    public interface IJobRequestService
+    public interface IJobStartService
     {
         Task FulfillOrder(int orderId);
     }

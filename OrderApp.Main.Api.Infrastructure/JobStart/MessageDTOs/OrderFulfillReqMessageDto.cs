@@ -1,4 +1,4 @@
-﻿namespace OrderApp.Main.Api.Infrastructure.JobRequest.MessageDTOs
+﻿namespace OrderApp.Main.Api.Infrastructure.JobStart.MessageDTOs
 {
     public record OrderFulfillReqMessageDto
     {

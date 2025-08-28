@@ -1,12 +1,12 @@
 ﻿using AWS.Messaging.Publishers.SNS;
 using OrderApp.Main.Api.Application.Interfaces.ExternalServices;
 using OrderApp.Main.Api.Domain.Entities.OrderEntities;
-using OrderApp.Main.Api.Infrastructure.Notify.MessageDTOs;
+using OrderApp.Main.Api.Infrastructure.Notifiers.MessageDTOs;
 
-namespace OrderApp.Main.Api.Infrastructure.Notify
+namespace OrderApp.Main.Api.Infrastructure.Notifiers
 {
-    public class OrderNotifyService(IEmailService emailService, ISNSPublisher snsPublisher)
-        : IOrderNotifyService
+    public class OrderNotifier(IEmailService emailService, ISNSPublisher snsPublisher)
+        : IOrderNotifier
     {
         private static readonly HashSet<OrderStatus> OrderStatusesWithEmailNotice =
         [

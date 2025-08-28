@@ -2,7 +2,7 @@
 
 namespace OrderApp.Main.Api.Application.Interfaces.ExternalServices
 {
-    public interface IOrderNotifyService
+    public interface IOrderNotifier
     {
         Task NotifyEvent(OrderEvent orderEvent);
     }

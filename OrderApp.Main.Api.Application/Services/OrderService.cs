@@ -10,13 +10,13 @@ namespace OrderApp.Main.Api.Application.Services
 {
     public class OrderService(
         IUnitOfWork unitOfWork,
-        IJobRequestService jobRequestService,
-        IOrderNotifyService orderNotifyService
+        IJobStartService jobStartService,
+        IOrderNotifier orderNotifier
     ) : IOrderService
     {
         private readonly IUnitOfWork unitOfWork = unitOfWork;
-        private readonly IJobRequestService jobRequestService = jobRequestService;
-        private readonly IOrderNotifyService orderNotifyService = orderNotifyService;
+        private readonly IJobStartService jobStartService = jobStartService;
+        private readonly IOrderNotifier orderNotifier = orderNotifier;
 
         public async Task<IReadOnlyList<OrderListItemDto>> GetAll(
             IEnumerable<OrderStatus>? statuses = null
@@ -76,8 +76,8 @@ namespace OrderApp.Main.Api.Application.Services
             unitOfWork.Orders.Add(order);
             await unitOfWork.SaveChanges();
 
-            await jobRequestService.FulfillOrder(order.Id);
-            await orderNotifyService.NotifyEvent(order.CurrentEvent);
+            await jobStartService.FulfillOrder(order.Id);
+            await orderNotifier.NotifyEvent(order.CurrentEvent);
 
             return (await GetDetailsById(order.Id)).Value;
         }
@@ -94,11 +94,11 @@ namespace OrderApp.Main.Api.Application.Services
 
             order.BeginFulfill();
             await unitOfWork.SaveChanges();
-            await orderNotifyService.NotifyEvent(order.CurrentEvent);
+            await orderNotifier.NotifyEvent(order.CurrentEvent);
 
             order.FinishFulfill();
             await unitOfWork.SaveChanges();
-            await orderNotifyService.NotifyEvent(order.CurrentEvent);
+            await orderNotifier.NotifyEvent(order.CurrentEvent);
 
             return Result.Ok();
         }
@@ -129,7 +129,7 @@ namespace OrderApp.Main.Api.Application.Services
             }
 
             await unitOfWork.SaveChanges();
-            await orderNotifyService.NotifyEvent(order.CurrentEvent);
+            await orderNotifier.NotifyEvent(order.CurrentEvent);
 
             return OrderDetailsDto.FromEntity(order);
         }
@@ -156,7 +156,7 @@ namespace OrderApp.Main.Api.Application.Services
             updateStatusFunc(order);
             await unitOfWork.SaveChanges();
 
-            await orderNotifyService.NotifyEvent(order.CurrentEvent);
+            await orderNotifier.NotifyEvent(order.CurrentEvent);
 
             return Result.Ok();
         }

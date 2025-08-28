@@ -10,10 +10,10 @@ using Newtonsoft.Json.Serialization;
 using OpenSearch.Client;
 using OrderApp.Main.Api.Application.Interfaces;
 using OrderApp.Main.Api.Application.Interfaces.ExternalServices;
-using OrderApp.Main.Api.Infrastructure.JobRequest;
-using OrderApp.Main.Api.Infrastructure.JobRequest.MessageDTOs;
-using OrderApp.Main.Api.Infrastructure.Notify;
-using OrderApp.Main.Api.Infrastructure.Notify.MessageDTOs;
+using OrderApp.Main.Api.Infrastructure.JobStart;
+using OrderApp.Main.Api.Infrastructure.JobStart.MessageDTOs;
+using OrderApp.Main.Api.Infrastructure.Notifiers;
+using OrderApp.Main.Api.Infrastructure.Notifiers.MessageDTOs;
 using OrderApp.Main.Api.Infrastructure.Persistence;
 using OrderApp.Main.Api.Infrastructure.VisaPayment;
 using Refit;
@@ -36,8 +36,8 @@ namespace OrderApp.Main.Api.Infrastructure
             SetupVisaApiClient(infraConfig, services);
 
             services.AddScoped<IEmailService, EmailService>();
-            services.AddScoped<IJobRequestService, JobRequestService>();
-            services.AddScoped<IOrderNotifyService, OrderNotifyService>();
+            services.AddScoped<IJobStartService, JobStartService>();
+            services.AddScoped<IOrderNotifier, OrderNotifier>();
             services.AddSingleton<IProductSearchService, ProductSearchService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IVisaPaymentService, VisaPaymentService>();
