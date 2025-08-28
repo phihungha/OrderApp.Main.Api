@@ -51,11 +51,11 @@ namespace OrderApp.Main.Api.Infrastructure.Notifiers
 
             var subjectStatusDescription = status switch
             {
-                OrderStatus.WaitingForShipping => "is Waiting for Shipping",
-                OrderStatus.Shipping => "is being Shipped",
-                OrderStatus.Shipped => "has been Shipped",
-                OrderStatus.Completed => "is Completed",
-                OrderStatus.Canceled => "has been Canceled",
+                OrderStatus.WaitingForShipping => "is waiting for shipping",
+                OrderStatus.Shipping => "is being shipped",
+                OrderStatus.Shipped => "has been shipped",
+                OrderStatus.Completed => "is completed",
+                OrderStatus.Canceled => "has been canceled",
                 _ => "has been updated",
             };
             var emailSubject = $"Order #{orderId} {subjectStatusDescription}";
