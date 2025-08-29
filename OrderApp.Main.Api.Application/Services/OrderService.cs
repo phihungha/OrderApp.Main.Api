@@ -4,6 +4,7 @@ using OrderApp.Main.Api.Application.Interfaces;
 using OrderApp.Main.Api.Application.Interfaces.ApplicationServices;
 using OrderApp.Main.Api.Application.Interfaces.ExternalServices;
 using OrderApp.Main.Api.Domain.Entities.OrderEntities;
+using OrderApp.Main.Api.Domain.Entities.UserEntities;
 using OrderApp.Main.Api.Domain.Errors;
 
 namespace OrderApp.Main.Api.Application.Services
@@ -11,12 +12,14 @@ namespace OrderApp.Main.Api.Application.Services
     public class OrderService(
         IUnitOfWork unitOfWork,
         IJobStartService jobStartService,
-        IOrderNotifier orderNotifier
+        IOrderNotifier orderNotifier,
+        IPaymentService paymentService
     ) : IOrderService
     {
         private readonly IUnitOfWork unitOfWork = unitOfWork;
         private readonly IJobStartService jobStartService = jobStartService;
         private readonly IOrderNotifier orderNotifier = orderNotifier;
+        private readonly IPaymentService paymentService = paymentService;
 
         public async Task<IReadOnlyList<OrderListItemDto>> GetAll(
             IEnumerable<OrderStatus>? statuses = null
@@ -140,22 +143,59 @@ namespace OrderApp.Main.Api.Application.Services
         public async Task<Result> FinishShipping(int id) =>
             await UpdateStatus(id, order => order.FinishShipping());
 
-        public async Task<Result> Complete(int id) =>
-            await UpdateStatus(id, order => order.Complete());
+        public async Task<Result> Complete(int id)
+        {
+            var getResult = await unitOfWork.Orders.GetById(id);
+            if (getResult.IsFailed)
+            {
+                return Result.Fail(getResult.Errors);
+            }
+
+            var order = getResult.Value;
+
+            var paymentMethod = new PaymentMethod
+            {
+                CardNumber = "4111111111111111",
+                CardHolderName = "HA PHI HUNG",
+                CardExpiry = "12/27",
+                CardCvv = "123",
+            };
+            var paymentResult = await paymentService.Pay(order.TotalAmount, paymentMethod);
+
+            if (paymentResult.IsFailed)
+            {
+                return paymentResult;
+            }
+
+            var completeResult = order.Complete();
+            if (completeResult.IsFailed)
+            {
+                return completeResult;
+            }
+
+            await unitOfWork.SaveChanges();
+            await orderNotifier.NotifyEvent(order.CurrentEvent);
+
+            return Result.Ok();
+        }
 
         private async Task<Result> UpdateStatus(int id, Func<Order, Result> updateStatusFunc)
         {
-            var result = await unitOfWork.Orders.GetById(id);
-            if (result.IsFailed)
+            var getResult = await unitOfWork.Orders.GetById(id);
+            if (getResult.IsFailed)
             {
-                return Result.Fail(result.Errors);
+                return Result.Fail(getResult.Errors);
             }
 
-            var order = result.Value;
+            var order = getResult.Value;
 
-            updateStatusFunc(order);
+            var statusUpdateResult = updateStatusFunc(order);
+            if (statusUpdateResult.IsFailed)
+            {
+                return statusUpdateResult;
+            }
+
             await unitOfWork.SaveChanges();
-
             await orderNotifier.NotifyEvent(order.CurrentEvent);
 
             return Result.Ok();
