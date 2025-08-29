@@ -2,6 +2,9 @@
 {
     public record PaymentMethod
     {
+        public int Id { get; set; }
+        public required string UserId { get; set; }
+
         public required string CardNumber { get; set; }
         public required string CardHolderName { get; set; }
         public required string CardExpiry { get; set; }
