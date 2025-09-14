@@ -80,7 +80,10 @@ namespace OrderApp.Main.Api.Infrastructure
 
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseNpgsql(connectionString);
+                options.UseNpgsql(
+                    connectionString,
+                    p => p.MigrationsAssembly("OrderApp.Main.Api.DbMigrations")
+                );
             });
         }
 

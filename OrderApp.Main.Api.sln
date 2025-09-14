@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderApp.Main.Api.WebApi", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderApp.Main.Api.Jobs", "src\OrderApp.Main.Api.Jobs\OrderApp.Main.Api.Jobs.csproj", "{1F4EE027-F026-2857-6C66-6A28742DB578}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderApp.Main.Api.DbMigrations", "src\OrderApp.Main.Api.DbMigrations\OrderApp.Main.Api.DbMigrations.csproj", "{CFB578E9-EAC1-4905-8BD1-475FC8F2C722}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{1F4EE027-F026-2857-6C66-6A28742DB578}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F4EE027-F026-2857-6C66-6A28742DB578}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F4EE027-F026-2857-6C66-6A28742DB578}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFB578E9-EAC1-4905-8BD1-475FC8F2C722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFB578E9-EAC1-4905-8BD1-475FC8F2C722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFB578E9-EAC1-4905-8BD1-475FC8F2C722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFB578E9-EAC1-4905-8BD1-475FC8F2C722}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +69,7 @@ Global
 		{67A77A64-1ABB-A37E-D941-A336525981D4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{165BB401-30F0-493F-7710-24B2A6626423} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{1F4EE027-F026-2857-6C66-6A28742DB578} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{CFB578E9-EAC1-4905-8BD1-475FC8F2C722} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {865AB8D8-7116-4102-8299-1DB4768C9E7D}

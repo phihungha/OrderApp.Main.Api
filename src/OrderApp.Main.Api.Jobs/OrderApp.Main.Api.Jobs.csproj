@@ -21,6 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OrderApp.Main.Api.Application\OrderApp.Main.Api.Application.csproj" />
+    <ProjectReference Include="..\OrderApp.Main.Api.DbMigrations\OrderApp.Main.Api.DbMigrations.csproj" />
     <ProjectReference Include="..\OrderApp.Main.Api.Infrastructure\OrderApp.Main.Api.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

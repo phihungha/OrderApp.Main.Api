@@ -1814,6 +1814,13 @@
           "SharpGrip.FluentValidation.AutoValidation.Mvc": "[1.5.0, )"
         }
       },
+      "orderapp.main.api.dbmigrations": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "[9.0.9, )",
+          "OrderApp.Main.Api.Infrastructure": "[1.0.0, )"
+        }
+      },
       "orderapp.main.api.domain": {
         "type": "Project",
         "dependencies": {
