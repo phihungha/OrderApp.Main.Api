@@ -4,7 +4,7 @@ using OrderApp.Main.Api.Infrastructure.JobStart.MessageDTOs;
 
 namespace OrderApp.Main.Api.Infrastructure.JobStart
 {
-    public class JobStartService(ISQSPublisher sqsPublisher) : IJobStartService
+    public class JobService(ISQSPublisher sqsPublisher) : IJobService
     {
         private readonly ISQSPublisher sqsPublisher = sqsPublisher;
 

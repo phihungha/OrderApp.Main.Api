@@ -11,13 +11,13 @@ namespace OrderApp.Main.Api.Application.Services
 {
     public class OrderService(
         IUnitOfWork unitOfWork,
-        IJobStartService jobStartService,
+        IJobService jobService,
         IOrderNotifier orderNotifier,
         IPaymentService paymentService
     ) : IOrderService
     {
         private readonly IUnitOfWork unitOfWork = unitOfWork;
-        private readonly IJobStartService jobStartService = jobStartService;
+        private readonly IJobService jobService = jobService;
         private readonly IOrderNotifier orderNotifier = orderNotifier;
         private readonly IPaymentService paymentService = paymentService;
 
@@ -79,7 +79,7 @@ namespace OrderApp.Main.Api.Application.Services
             unitOfWork.Orders.Add(order);
             await unitOfWork.SaveChanges();
 
-            await jobStartService.FulfillOrder(order.Id);
+            await jobService.FulfillOrder(order.Id);
             await orderNotifier.NotifyEvent(order.CurrentEvent);
 
             return (await GetDetailsById(order.Id)).Value;

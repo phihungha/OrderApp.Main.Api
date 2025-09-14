@@ -36,7 +36,7 @@ namespace OrderApp.Main.Api.Infrastructure
             SetupVisaApiClient(infraConfig, services);
 
             services.AddScoped<IEmailService, EmailService>();
-            services.AddScoped<IJobStartService, JobStartService>();
+            services.AddScoped<IJobService, JobService>();
             services.AddScoped<IOrderNotifier, OrderNotifier>();
             services.AddSingleton<IProductSearchService, ProductSearchService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
