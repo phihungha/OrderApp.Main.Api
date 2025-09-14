@@ -25,6 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderApp.Main.Api.Jobs", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderApp.Main.Api.DbMigrations", "src\OrderApp.Main.Api.DbMigrations\OrderApp.Main.Api.DbMigrations.csproj", "{CFB578E9-EAC1-4905-8BD1-475FC8F2C722}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B5CC8C69-285A-4F99-862B-C655466F3BA4}"
+	ProjectSection(SolutionItems) = preProject
+		tests\products-test-data.json = tests\products-test-data.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

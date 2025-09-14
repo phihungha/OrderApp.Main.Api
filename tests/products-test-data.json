@@ -1,0 +1,352 @@
+[
+  {
+    "name": "Bluetooth Mouse Lightweight 1",
+    "shortDescription": "Lightweight bluetooth mouse",
+    "description": "Lightweight bluetooth mouse with memory foam padding.",
+    "price": 111.88,
+    "stockQuantity": 1495
+  },
+  {
+    "name": "Curved Display RGB 2",
+    "shortDescription": "RGB curved display",
+    "description": "RGB curved display with memory foam padding.",
+    "price": 251.89,
+    "stockQuantity": 1684
+  },
+  {
+    "name": "Portable Monitor Lightweight 3",
+    "shortDescription": "Lightweight portable monitor",
+    "description": "Lightweight portable monitor with noise cancellation.",
+    "price": 245.04,
+    "stockQuantity": 1850
+  },
+  {
+    "name": "Noise Cancelling Headphones Lightweight 4",
+    "shortDescription": "Lightweight noise cancelling headphones",
+    "description": "Lightweight noise cancelling headphones with adjustable DPI.",
+    "price": 84.37,
+    "stockQuantity": 1450
+  },
+  {
+    "name": "Bluetooth Mouse RGB 5",
+    "shortDescription": "RGB bluetooth mouse",
+    "description": "RGB bluetooth mouse with ultra-fast response.",
+    "price": 245.95,
+    "stockQuantity": 173
+  },
+  {
+    "name": "Curved Display Adjustable 6",
+    "shortDescription": "Adjustable curved display",
+    "description": "Adjustable curved display featuring customizable buttons.",
+    "price": 135.24,
+    "stockQuantity": 752
+  },
+  {
+    "name": "Ergonomic Mouse Compact 7",
+    "shortDescription": "Compact ergonomic mouse",
+    "description": "Compact ergonomic mouse with memory foam padding.",
+    "price": 42.75,
+    "stockQuantity": 1313
+  },
+  {
+    "name": "Over-Ear Headphones Ergonomic 8",
+    "shortDescription": "Ergonomic over-ear headphones",
+    "description": "Ergonomic over-ear headphones with adjustable DPI.",
+    "price": 184.2,
+    "stockQuantity": 1779
+  },
+  {
+    "name": "Wireless Headphones Adjustable 9",
+    "shortDescription": "Adjustable wireless headphones",
+    "description": "Adjustable wireless headphones featuring customizable buttons.",
+    "price": 205.45,
+    "stockQuantity": 313
+  },
+  {
+    "name": "Ergonomic Mouse Premium 10",
+    "shortDescription": "Premium ergonomic mouse",
+    "description": "Premium ergonomic mouse for office productivity.",
+    "price": 30.97,
+    "stockQuantity": 699
+  },
+  {
+    "name": "Portable Monitor RGB 11",
+    "shortDescription": "RGB portable monitor",
+    "description": "RGB portable monitor with adjustable DPI.",
+    "price": 199.68,
+    "stockQuantity": 1306
+  },
+  {
+    "name": "Mechanical Keyboard Premium 12",
+    "shortDescription": "Premium mechanical keyboard",
+    "description": "Premium mechanical keyboard with USB-C connection.",
+    "price": 36.33,
+    "stockQuantity": 1267
+  },
+  {
+    "name": "Wireless Headphones Budget 13",
+    "shortDescription": "Budget wireless headphones",
+    "description": "Budget wireless headphones with adjustable DPI.",
+    "price": 265.97,
+    "stockQuantity": 98
+  },
+  {
+    "name": "Noise Cancelling Headphones Adjustable 14",
+    "shortDescription": "Adjustable noise cancelling headphones",
+    "description": "Adjustable noise cancelling headphones with ultra-fast response.",
+    "price": 142.14,
+    "stockQuantity": 466
+  },
+  {
+    "name": "Wireless Keyboard Adjustable 15",
+    "shortDescription": "Adjustable wireless keyboard",
+    "description": "Adjustable wireless keyboard featuring customizable buttons.",
+    "price": 299.55,
+    "stockQuantity": 837
+  },
+  {
+    "name": "Mesh Office Chair Premium 16",
+    "shortDescription": "Premium mesh office chair",
+    "description": "Premium mesh office chair with noise cancellation.",
+    "price": 52.5,
+    "stockQuantity": 1663
+  },
+  {
+    "name": "Noise Cancelling Headphones Budget 17",
+    "shortDescription": "Budget noise cancelling headphones",
+    "description": "Budget noise cancelling headphones with USB-C connection.",
+    "price": 183.97,
+    "stockQuantity": 1325
+  },
+  {
+    "name": "Wireless Mouse Premium 18",
+    "shortDescription": "Premium wireless mouse",
+    "description": "Premium wireless mouse featuring customizable buttons.",
+    "price": 97.96,
+    "stockQuantity": 1890
+  },
+  {
+    "name": "Ergonomic Office Chair Silent 19",
+    "shortDescription": "Silent ergonomic office chair",
+    "description": "Silent ergonomic office chair with tactile switches.",
+    "price": 298.4,
+    "stockQuantity": 1383
+  },
+  {
+    "name": "Silent Mouse Budget 20",
+    "shortDescription": "Budget silent mouse",
+    "description": "Budget silent mouse with memory foam padding.",
+    "price": 226.11,
+    "stockQuantity": 262
+  },
+  {
+    "name": "Gaming Mouse Adjustable 21",
+    "shortDescription": "Adjustable gaming mouse",
+    "description": "Adjustable gaming mouse with USB-C connection.",
+    "price": 42.66,
+    "stockQuantity": 1477
+  },
+  {
+    "name": "Portable Monitor Ergonomic 22",
+    "shortDescription": "Ergonomic portable monitor",
+    "description": "Ergonomic portable monitor with USB-C connection.",
+    "price": 276.89,
+    "stockQuantity": 1957
+  },
+  {
+    "name": "Bluetooth Mouse Compact 23",
+    "shortDescription": "Compact bluetooth mouse",
+    "description": "Compact bluetooth mouse with USB-C connection.",
+    "price": 65.54,
+    "stockQuantity": 598
+  },
+  {
+    "name": "Curved Display Pro 24",
+    "shortDescription": "Pro curved display",
+    "description": "Pro curved display with noise cancellation.",
+    "price": 191.38,
+    "stockQuantity": 1033
+  },
+  {
+    "name": "Mesh Office Chair Budget 25",
+    "shortDescription": "Budget mesh office chair",
+    "description": "Budget mesh office chair with memory foam padding.",
+    "price": 250.2,
+    "stockQuantity": 744
+  },
+  {
+    "name": "Ergonomic Mouse RGB 26",
+    "shortDescription": "RGB ergonomic mouse",
+    "description": "RGB ergonomic mouse with long battery life.",
+    "price": 85.41,
+    "stockQuantity": 459
+  },
+  {
+    "name": "Gaming Keyboard Budget 27",
+    "shortDescription": "Budget gaming keyboard",
+    "description": "Budget gaming keyboard with USB-C connection.",
+    "price": 113.35,
+    "stockQuantity": 692
+  },
+  {
+    "name": "4K Monitor Adjustable 28",
+    "shortDescription": "Adjustable 4k monitor",
+    "description": "Adjustable 4k monitor with ultra-fast response.",
+    "price": 59.5,
+    "stockQuantity": 200
+  },
+  {
+    "name": "Bluetooth Keyboard RGB 29",
+    "shortDescription": "RGB bluetooth keyboard",
+    "description": "RGB bluetooth keyboard with noise cancellation.",
+    "price": 31.0,
+    "stockQuantity": 835
+  },
+  {
+    "name": "Wireless Keyboard Silent 30",
+    "shortDescription": "Silent wireless keyboard",
+    "description": "Silent wireless keyboard with adjustable DPI.",
+    "price": 124.99,
+    "stockQuantity": 144
+  },
+  {
+    "name": "Ergonomic Office Chair Ergonomic 31",
+    "shortDescription": "Ergonomic ergonomic office chair",
+    "description": "Ergonomic ergonomic office chair with long battery life.",
+    "price": 280.48,
+    "stockQuantity": 1392
+  },
+  {
+    "name": "Bluetooth Earbuds Pro 32",
+    "shortDescription": "Pro bluetooth earbuds",
+    "description": "Pro bluetooth earbuds featuring customizable buttons.",
+    "price": 259.72,
+    "stockQuantity": 715
+  },
+  {
+    "name": "Mesh Office Chair High Precision 33",
+    "shortDescription": "High Precision mesh office chair",
+    "description": "High Precision mesh office chair with noise cancellation.",
+    "price": 161.0,
+    "stockQuantity": 1876
+  },
+  {
+    "name": "Bluetooth Mouse Pro 34",
+    "shortDescription": "Pro bluetooth mouse",
+    "description": "Pro bluetooth mouse with ultra-fast response.",
+    "price": 198.62,
+    "stockQuantity": 1634
+  },
+  {
+    "name": "Gaming Chair Pro 35",
+    "shortDescription": "Pro gaming chair",
+    "description": "Pro gaming chair with tactile switches.",
+    "price": 206.07,
+    "stockQuantity": 1703
+  },
+  {
+    "name": "Gaming Headset Compact 36",
+    "shortDescription": "Compact gaming headset",
+    "description": "Compact gaming headset with ultra-fast response.",
+    "price": 201.68,
+    "stockQuantity": 200
+  },
+  {
+    "name": "Wireless Keyboard Budget 37",
+    "shortDescription": "Budget wireless keyboard",
+    "description": "Budget wireless keyboard with noise cancellation.",
+    "price": 132.8,
+    "stockQuantity": 1667
+  },
+  {
+    "name": "Ergonomic Office Chair Silent 38",
+    "shortDescription": "Silent ergonomic office chair",
+    "description": "Silent ergonomic office chair featuring RGB lighting.",
+    "price": 265.73,
+    "stockQuantity": 897
+  },
+  {
+    "name": "Wireless Mouse Ergonomic 39",
+    "shortDescription": "Ergonomic wireless mouse",
+    "description": "Ergonomic wireless mouse featuring RGB lighting.",
+    "price": 84.81,
+    "stockQuantity": 1311
+  },
+  {
+    "name": "4K Monitor Ergonomic 40",
+    "shortDescription": "Ergonomic 4k monitor",
+    "description": "Ergonomic 4k monitor with memory foam padding.",
+    "price": 269.68,
+    "stockQuantity": 1720
+  },
+  {
+    "name": "Mesh Office Chair High Precision 41",
+    "shortDescription": "High Precision mesh office chair",
+    "description": "High Precision mesh office chair with memory foam padding.",
+    "price": 82.04,
+    "stockQuantity": 1167
+  },
+  {
+    "name": "Compact Keyboard Ergonomic 42",
+    "shortDescription": "Ergonomic compact keyboard",
+    "description": "Ergonomic compact keyboard with long battery life.",
+    "price": 106.76,
+    "stockQuantity": 718
+  },
+  {
+    "name": "Ergonomic Mouse Lightweight 43",
+    "shortDescription": "Lightweight ergonomic mouse",
+    "description": "Lightweight ergonomic mouse with memory foam padding.",
+    "price": 260.55,
+    "stockQuantity": 1406
+  },
+  {
+    "name": "Gaming Mouse Silent 44",
+    "shortDescription": "Silent gaming mouse",
+    "description": "Silent gaming mouse with memory foam padding.",
+    "price": 249.02,
+    "stockQuantity": 1488
+  },
+  {
+    "name": "Noise Cancelling Headphones Lightweight 45",
+    "shortDescription": "Lightweight noise cancelling headphones",
+    "description": "Lightweight noise cancelling headphones with long battery life.",
+    "price": 27.04,
+    "stockQuantity": 1338
+  },
+  {
+    "name": "4K Monitor Pro 46",
+    "shortDescription": "Pro 4k monitor",
+    "description": "Pro 4k monitor with memory foam padding.",
+    "price": 178.71,
+    "stockQuantity": 1283
+  },
+  {
+    "name": "Silent Mouse Premium 47",
+    "shortDescription": "Premium silent mouse",
+    "description": "Premium silent mouse with long battery life.",
+    "price": 15.8,
+    "stockQuantity": 1546
+  },
+  {
+    "name": "Wireless Mouse Budget 48",
+    "shortDescription": "Budget wireless mouse",
+    "description": "Budget wireless mouse with USB-C connection.",
+    "price": 272.91,
+    "stockQuantity": 319
+  },
+  {
+    "name": "Noise Cancelling Headphones Ergonomic 49",
+    "shortDescription": "Ergonomic noise cancelling headphones",
+    "description": "Ergonomic noise cancelling headphones for office productivity.",
+    "price": 260.95,
+    "stockQuantity": 741
+  },
+  {
+    "name": "Adjustable Desk Chair Silent 50",
+    "shortDescription": "Silent adjustable desk chair",
+    "description": "Silent adjustable desk chair with memory foam padding.",
+    "price": 77.78,
+    "stockQuantity": 552
+  }
+]
