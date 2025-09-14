@@ -16,7 +16,7 @@
     {
         public const string Key = "AwsSqs";
 
-        public required AwsSqsHandlerConfig OrderFulfillRequests { get; set; }
+        public required AwsSqsHandlerConfig JobRequests { get; set; }
     }
 
     public record AwsSqsHandlerConfig

@@ -6,7 +6,7 @@ namespace OrderApp.Main.Api.Jobs
     {
         public const string Key = "AwsSqs";
 
-        public required AwsSqsHandlerConfig OrderFulfillRequests { get; set; }
+        public required AwsSqsHandlerConfig JobRequests { get; set; }
         public required AwsSqsHandlerConfig OrderUpdates { get; set; }
     }
 

@@ -98,7 +98,7 @@ namespace OrderApp.Main.Api.Infrastructure
             services.AddAWSMessageBus(bus =>
             {
                 bus.AddSQSPublisher<OrderFulfillReqMessageDto>(
-                    sqsConfig.OrderFulfillRequests.QueueUrl,
+                    sqsConfig.JobRequests.QueueUrl,
                     OrderFulfillReqMessageDto.MessageType
                 );
 

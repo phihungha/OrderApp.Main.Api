@@ -17,7 +17,7 @@ namespace OrderApp.Main.Api.Jobs.SqsHandlers
             builder.Services.AddAWSMessageBus(busBuilder =>
             {
                 busBuilder.AddSQSPoller(
-                    awsSqsConfig.OrderFulfillRequests.QueueUrl,
+                    awsSqsConfig.JobRequests.QueueUrl,
                     options =>
                     {
                         options.MaxNumberOfConcurrentMessages = 10;
