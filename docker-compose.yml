@@ -3,14 +3,14 @@ services:
     container_name: orderapp-main-api-web-api
     image: ${DOCKER_REGISTRY-}orderapp-main-api-web-api:v0.1.0
     build:
-      context: .
+      context: src/
       dockerfile: OrderApp.Main.Api.WebApi/Dockerfile
     depends_on: ["default-db", "jobs", "opensearch"]
   jobs:
     container_name: orderapp-main-api-jobs
     image: ${DOCKER_REGISTRY-}orderapp-main-api-jobs:v0.1.0
     build:
-      context: .
+      context: src/
       dockerfile: OrderApp.Main.Api.Jobs/Dockerfile
     depends_on: ["default-db", "jobs-db"]   
   default-db:
